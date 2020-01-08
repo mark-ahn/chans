@@ -11,29 +11,29 @@ import (
 
 type Some generic.Type
 
-type _Prefix_SomeMultiCaster struct {
+type _Prefix_SomeBroadCaster struct {
 	in  []<-chan Some
 	out []chan<- Some
 }
 
-func New_Prefix_SomeMultiCaster() *_Prefix_SomeMultiCaster {
-	return &_Prefix_SomeMultiCaster{
+func New_Prefix_SomeBroadCaster() *_Prefix_SomeBroadCaster {
+	return &_Prefix_SomeBroadCaster{
 		in:  make([]<-chan Some, 0),
 		out: make([]chan<- Some, 0),
 	}
 }
 
-func (__ *_Prefix_SomeMultiCaster) AddSources(ins ...<-chan Some) *_Prefix_SomeMultiCaster {
+func (__ *_Prefix_SomeBroadCaster) AddSources(ins ...<-chan Some) *_Prefix_SomeBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *_Prefix_SomeMultiCaster) Add(outs ...chan<- Some) *_Prefix_SomeMultiCaster {
+func (__ *_Prefix_SomeBroadCaster) AddReceivers(outs ...chan<- Some) *_Prefix_SomeBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *_Prefix_SomeMultiCaster) Serve() hexa.StoppableOne {
+func (__ *_Prefix_SomeBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {

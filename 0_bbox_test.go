@@ -7,7 +7,7 @@ import (
 	"github.com/mark-ahn/chans"
 )
 
-func TestInt(t *testing.T) {
+func TestIntCaster(t *testing.T) {
 	src_one := make(chan int, 1)
 	src_two := make(chan int, 1)
 
@@ -15,7 +15,7 @@ func TestInt(t *testing.T) {
 	dest_two := make(chan int, 1)
 	dest_three := make(chan int, 1)
 
-	cast_srv := chans.NewOfIntMultiCaster().AddSources(src_one, src_two).Add(dest_one, dest_two, dest_three).Serve()
+	cast_srv := chans.NewOfIntBroadCaster().AddSources(src_one, src_two).AddReceivers(dest_one, dest_two, dest_three).Serve()
 	defer func() {
 		cast_srv.Close()
 		<-cast_srv.DoneNotify()

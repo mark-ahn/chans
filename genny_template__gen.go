@@ -12,29 +12,29 @@ import (
 	"github.com/mark-ahn/hexa"
 )
 
-type OfBoolMultiCaster struct {
+type OfBoolBroadCaster struct {
 	in  []<-chan bool
 	out []chan<- bool
 }
 
-func NewOfBoolMultiCaster() *OfBoolMultiCaster {
-	return &OfBoolMultiCaster{
+func NewOfBoolBroadCaster() *OfBoolBroadCaster {
+	return &OfBoolBroadCaster{
 		in:  make([]<-chan bool, 0),
 		out: make([]chan<- bool, 0),
 	}
 }
 
-func (__ *OfBoolMultiCaster) AddSources(ins ...<-chan bool) *OfBoolMultiCaster {
+func (__ *OfBoolBroadCaster) AddSources(ins ...<-chan bool) *OfBoolBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfBoolMultiCaster) Add(outs ...chan<- bool) *OfBoolMultiCaster {
+func (__ *OfBoolBroadCaster) AddReceivers(outs ...chan<- bool) *OfBoolBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfBoolMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfBoolBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -84,29 +84,29 @@ func (__ *OfBoolMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfByteMultiCaster struct {
+type OfByteBroadCaster struct {
 	in  []<-chan byte
 	out []chan<- byte
 }
 
-func NewOfByteMultiCaster() *OfByteMultiCaster {
-	return &OfByteMultiCaster{
+func NewOfByteBroadCaster() *OfByteBroadCaster {
+	return &OfByteBroadCaster{
 		in:  make([]<-chan byte, 0),
 		out: make([]chan<- byte, 0),
 	}
 }
 
-func (__ *OfByteMultiCaster) AddSources(ins ...<-chan byte) *OfByteMultiCaster {
+func (__ *OfByteBroadCaster) AddSources(ins ...<-chan byte) *OfByteBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfByteMultiCaster) Add(outs ...chan<- byte) *OfByteMultiCaster {
+func (__ *OfByteBroadCaster) AddReceivers(outs ...chan<- byte) *OfByteBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfByteMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfByteBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -156,29 +156,29 @@ func (__ *OfByteMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfComplex128MultiCaster struct {
+type OfComplex128BroadCaster struct {
 	in  []<-chan complex128
 	out []chan<- complex128
 }
 
-func NewOfComplex128MultiCaster() *OfComplex128MultiCaster {
-	return &OfComplex128MultiCaster{
+func NewOfComplex128BroadCaster() *OfComplex128BroadCaster {
+	return &OfComplex128BroadCaster{
 		in:  make([]<-chan complex128, 0),
 		out: make([]chan<- complex128, 0),
 	}
 }
 
-func (__ *OfComplex128MultiCaster) AddSources(ins ...<-chan complex128) *OfComplex128MultiCaster {
+func (__ *OfComplex128BroadCaster) AddSources(ins ...<-chan complex128) *OfComplex128BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfComplex128MultiCaster) Add(outs ...chan<- complex128) *OfComplex128MultiCaster {
+func (__ *OfComplex128BroadCaster) AddReceivers(outs ...chan<- complex128) *OfComplex128BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfComplex128MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfComplex128BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -228,29 +228,29 @@ func (__ *OfComplex128MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfComplex64MultiCaster struct {
+type OfComplex64BroadCaster struct {
 	in  []<-chan complex64
 	out []chan<- complex64
 }
 
-func NewOfComplex64MultiCaster() *OfComplex64MultiCaster {
-	return &OfComplex64MultiCaster{
+func NewOfComplex64BroadCaster() *OfComplex64BroadCaster {
+	return &OfComplex64BroadCaster{
 		in:  make([]<-chan complex64, 0),
 		out: make([]chan<- complex64, 0),
 	}
 }
 
-func (__ *OfComplex64MultiCaster) AddSources(ins ...<-chan complex64) *OfComplex64MultiCaster {
+func (__ *OfComplex64BroadCaster) AddSources(ins ...<-chan complex64) *OfComplex64BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfComplex64MultiCaster) Add(outs ...chan<- complex64) *OfComplex64MultiCaster {
+func (__ *OfComplex64BroadCaster) AddReceivers(outs ...chan<- complex64) *OfComplex64BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfComplex64MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfComplex64BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -300,29 +300,29 @@ func (__ *OfComplex64MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfErrorMultiCaster struct {
+type OfErrorBroadCaster struct {
 	in  []<-chan error
 	out []chan<- error
 }
 
-func NewOfErrorMultiCaster() *OfErrorMultiCaster {
-	return &OfErrorMultiCaster{
+func NewOfErrorBroadCaster() *OfErrorBroadCaster {
+	return &OfErrorBroadCaster{
 		in:  make([]<-chan error, 0),
 		out: make([]chan<- error, 0),
 	}
 }
 
-func (__ *OfErrorMultiCaster) AddSources(ins ...<-chan error) *OfErrorMultiCaster {
+func (__ *OfErrorBroadCaster) AddSources(ins ...<-chan error) *OfErrorBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfErrorMultiCaster) Add(outs ...chan<- error) *OfErrorMultiCaster {
+func (__ *OfErrorBroadCaster) AddReceivers(outs ...chan<- error) *OfErrorBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfErrorMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfErrorBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -372,29 +372,29 @@ func (__ *OfErrorMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfFloat32MultiCaster struct {
+type OfFloat32BroadCaster struct {
 	in  []<-chan float32
 	out []chan<- float32
 }
 
-func NewOfFloat32MultiCaster() *OfFloat32MultiCaster {
-	return &OfFloat32MultiCaster{
+func NewOfFloat32BroadCaster() *OfFloat32BroadCaster {
+	return &OfFloat32BroadCaster{
 		in:  make([]<-chan float32, 0),
 		out: make([]chan<- float32, 0),
 	}
 }
 
-func (__ *OfFloat32MultiCaster) AddSources(ins ...<-chan float32) *OfFloat32MultiCaster {
+func (__ *OfFloat32BroadCaster) AddSources(ins ...<-chan float32) *OfFloat32BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfFloat32MultiCaster) Add(outs ...chan<- float32) *OfFloat32MultiCaster {
+func (__ *OfFloat32BroadCaster) AddReceivers(outs ...chan<- float32) *OfFloat32BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfFloat32MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfFloat32BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -444,29 +444,29 @@ func (__ *OfFloat32MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfFloat64MultiCaster struct {
+type OfFloat64BroadCaster struct {
 	in  []<-chan float64
 	out []chan<- float64
 }
 
-func NewOfFloat64MultiCaster() *OfFloat64MultiCaster {
-	return &OfFloat64MultiCaster{
+func NewOfFloat64BroadCaster() *OfFloat64BroadCaster {
+	return &OfFloat64BroadCaster{
 		in:  make([]<-chan float64, 0),
 		out: make([]chan<- float64, 0),
 	}
 }
 
-func (__ *OfFloat64MultiCaster) AddSources(ins ...<-chan float64) *OfFloat64MultiCaster {
+func (__ *OfFloat64BroadCaster) AddSources(ins ...<-chan float64) *OfFloat64BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfFloat64MultiCaster) Add(outs ...chan<- float64) *OfFloat64MultiCaster {
+func (__ *OfFloat64BroadCaster) AddReceivers(outs ...chan<- float64) *OfFloat64BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfFloat64MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfFloat64BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -516,29 +516,29 @@ func (__ *OfFloat64MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfIntMultiCaster struct {
+type OfIntBroadCaster struct {
 	in  []<-chan int
 	out []chan<- int
 }
 
-func NewOfIntMultiCaster() *OfIntMultiCaster {
-	return &OfIntMultiCaster{
+func NewOfIntBroadCaster() *OfIntBroadCaster {
+	return &OfIntBroadCaster{
 		in:  make([]<-chan int, 0),
 		out: make([]chan<- int, 0),
 	}
 }
 
-func (__ *OfIntMultiCaster) AddSources(ins ...<-chan int) *OfIntMultiCaster {
+func (__ *OfIntBroadCaster) AddSources(ins ...<-chan int) *OfIntBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfIntMultiCaster) Add(outs ...chan<- int) *OfIntMultiCaster {
+func (__ *OfIntBroadCaster) AddReceivers(outs ...chan<- int) *OfIntBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfIntMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfIntBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -588,29 +588,29 @@ func (__ *OfIntMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfInt16MultiCaster struct {
+type OfInt16BroadCaster struct {
 	in  []<-chan int16
 	out []chan<- int16
 }
 
-func NewOfInt16MultiCaster() *OfInt16MultiCaster {
-	return &OfInt16MultiCaster{
+func NewOfInt16BroadCaster() *OfInt16BroadCaster {
+	return &OfInt16BroadCaster{
 		in:  make([]<-chan int16, 0),
 		out: make([]chan<- int16, 0),
 	}
 }
 
-func (__ *OfInt16MultiCaster) AddSources(ins ...<-chan int16) *OfInt16MultiCaster {
+func (__ *OfInt16BroadCaster) AddSources(ins ...<-chan int16) *OfInt16BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfInt16MultiCaster) Add(outs ...chan<- int16) *OfInt16MultiCaster {
+func (__ *OfInt16BroadCaster) AddReceivers(outs ...chan<- int16) *OfInt16BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfInt16MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfInt16BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -660,29 +660,29 @@ func (__ *OfInt16MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfInt32MultiCaster struct {
+type OfInt32BroadCaster struct {
 	in  []<-chan int32
 	out []chan<- int32
 }
 
-func NewOfInt32MultiCaster() *OfInt32MultiCaster {
-	return &OfInt32MultiCaster{
+func NewOfInt32BroadCaster() *OfInt32BroadCaster {
+	return &OfInt32BroadCaster{
 		in:  make([]<-chan int32, 0),
 		out: make([]chan<- int32, 0),
 	}
 }
 
-func (__ *OfInt32MultiCaster) AddSources(ins ...<-chan int32) *OfInt32MultiCaster {
+func (__ *OfInt32BroadCaster) AddSources(ins ...<-chan int32) *OfInt32BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfInt32MultiCaster) Add(outs ...chan<- int32) *OfInt32MultiCaster {
+func (__ *OfInt32BroadCaster) AddReceivers(outs ...chan<- int32) *OfInt32BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfInt32MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfInt32BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -732,29 +732,29 @@ func (__ *OfInt32MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfInt64MultiCaster struct {
+type OfInt64BroadCaster struct {
 	in  []<-chan int64
 	out []chan<- int64
 }
 
-func NewOfInt64MultiCaster() *OfInt64MultiCaster {
-	return &OfInt64MultiCaster{
+func NewOfInt64BroadCaster() *OfInt64BroadCaster {
+	return &OfInt64BroadCaster{
 		in:  make([]<-chan int64, 0),
 		out: make([]chan<- int64, 0),
 	}
 }
 
-func (__ *OfInt64MultiCaster) AddSources(ins ...<-chan int64) *OfInt64MultiCaster {
+func (__ *OfInt64BroadCaster) AddSources(ins ...<-chan int64) *OfInt64BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfInt64MultiCaster) Add(outs ...chan<- int64) *OfInt64MultiCaster {
+func (__ *OfInt64BroadCaster) AddReceivers(outs ...chan<- int64) *OfInt64BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfInt64MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfInt64BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -804,29 +804,29 @@ func (__ *OfInt64MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfInt8MultiCaster struct {
+type OfInt8BroadCaster struct {
 	in  []<-chan int8
 	out []chan<- int8
 }
 
-func NewOfInt8MultiCaster() *OfInt8MultiCaster {
-	return &OfInt8MultiCaster{
+func NewOfInt8BroadCaster() *OfInt8BroadCaster {
+	return &OfInt8BroadCaster{
 		in:  make([]<-chan int8, 0),
 		out: make([]chan<- int8, 0),
 	}
 }
 
-func (__ *OfInt8MultiCaster) AddSources(ins ...<-chan int8) *OfInt8MultiCaster {
+func (__ *OfInt8BroadCaster) AddSources(ins ...<-chan int8) *OfInt8BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfInt8MultiCaster) Add(outs ...chan<- int8) *OfInt8MultiCaster {
+func (__ *OfInt8BroadCaster) AddReceivers(outs ...chan<- int8) *OfInt8BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfInt8MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfInt8BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -876,29 +876,29 @@ func (__ *OfInt8MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfRuneMultiCaster struct {
+type OfRuneBroadCaster struct {
 	in  []<-chan rune
 	out []chan<- rune
 }
 
-func NewOfRuneMultiCaster() *OfRuneMultiCaster {
-	return &OfRuneMultiCaster{
+func NewOfRuneBroadCaster() *OfRuneBroadCaster {
+	return &OfRuneBroadCaster{
 		in:  make([]<-chan rune, 0),
 		out: make([]chan<- rune, 0),
 	}
 }
 
-func (__ *OfRuneMultiCaster) AddSources(ins ...<-chan rune) *OfRuneMultiCaster {
+func (__ *OfRuneBroadCaster) AddSources(ins ...<-chan rune) *OfRuneBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfRuneMultiCaster) Add(outs ...chan<- rune) *OfRuneMultiCaster {
+func (__ *OfRuneBroadCaster) AddReceivers(outs ...chan<- rune) *OfRuneBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfRuneMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfRuneBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -948,29 +948,29 @@ func (__ *OfRuneMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfStringMultiCaster struct {
+type OfStringBroadCaster struct {
 	in  []<-chan string
 	out []chan<- string
 }
 
-func NewOfStringMultiCaster() *OfStringMultiCaster {
-	return &OfStringMultiCaster{
+func NewOfStringBroadCaster() *OfStringBroadCaster {
+	return &OfStringBroadCaster{
 		in:  make([]<-chan string, 0),
 		out: make([]chan<- string, 0),
 	}
 }
 
-func (__ *OfStringMultiCaster) AddSources(ins ...<-chan string) *OfStringMultiCaster {
+func (__ *OfStringBroadCaster) AddSources(ins ...<-chan string) *OfStringBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfStringMultiCaster) Add(outs ...chan<- string) *OfStringMultiCaster {
+func (__ *OfStringBroadCaster) AddReceivers(outs ...chan<- string) *OfStringBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfStringMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfStringBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1020,29 +1020,29 @@ func (__ *OfStringMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUintMultiCaster struct {
+type OfUintBroadCaster struct {
 	in  []<-chan uint
 	out []chan<- uint
 }
 
-func NewOfUintMultiCaster() *OfUintMultiCaster {
-	return &OfUintMultiCaster{
+func NewOfUintBroadCaster() *OfUintBroadCaster {
+	return &OfUintBroadCaster{
 		in:  make([]<-chan uint, 0),
 		out: make([]chan<- uint, 0),
 	}
 }
 
-func (__ *OfUintMultiCaster) AddSources(ins ...<-chan uint) *OfUintMultiCaster {
+func (__ *OfUintBroadCaster) AddSources(ins ...<-chan uint) *OfUintBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUintMultiCaster) Add(outs ...chan<- uint) *OfUintMultiCaster {
+func (__ *OfUintBroadCaster) AddReceivers(outs ...chan<- uint) *OfUintBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUintMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUintBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1092,29 +1092,29 @@ func (__ *OfUintMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUint16MultiCaster struct {
+type OfUint16BroadCaster struct {
 	in  []<-chan uint16
 	out []chan<- uint16
 }
 
-func NewOfUint16MultiCaster() *OfUint16MultiCaster {
-	return &OfUint16MultiCaster{
+func NewOfUint16BroadCaster() *OfUint16BroadCaster {
+	return &OfUint16BroadCaster{
 		in:  make([]<-chan uint16, 0),
 		out: make([]chan<- uint16, 0),
 	}
 }
 
-func (__ *OfUint16MultiCaster) AddSources(ins ...<-chan uint16) *OfUint16MultiCaster {
+func (__ *OfUint16BroadCaster) AddSources(ins ...<-chan uint16) *OfUint16BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUint16MultiCaster) Add(outs ...chan<- uint16) *OfUint16MultiCaster {
+func (__ *OfUint16BroadCaster) AddReceivers(outs ...chan<- uint16) *OfUint16BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUint16MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUint16BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1164,29 +1164,29 @@ func (__ *OfUint16MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUint32MultiCaster struct {
+type OfUint32BroadCaster struct {
 	in  []<-chan uint32
 	out []chan<- uint32
 }
 
-func NewOfUint32MultiCaster() *OfUint32MultiCaster {
-	return &OfUint32MultiCaster{
+func NewOfUint32BroadCaster() *OfUint32BroadCaster {
+	return &OfUint32BroadCaster{
 		in:  make([]<-chan uint32, 0),
 		out: make([]chan<- uint32, 0),
 	}
 }
 
-func (__ *OfUint32MultiCaster) AddSources(ins ...<-chan uint32) *OfUint32MultiCaster {
+func (__ *OfUint32BroadCaster) AddSources(ins ...<-chan uint32) *OfUint32BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUint32MultiCaster) Add(outs ...chan<- uint32) *OfUint32MultiCaster {
+func (__ *OfUint32BroadCaster) AddReceivers(outs ...chan<- uint32) *OfUint32BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUint32MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUint32BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1236,29 +1236,29 @@ func (__ *OfUint32MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUint64MultiCaster struct {
+type OfUint64BroadCaster struct {
 	in  []<-chan uint64
 	out []chan<- uint64
 }
 
-func NewOfUint64MultiCaster() *OfUint64MultiCaster {
-	return &OfUint64MultiCaster{
+func NewOfUint64BroadCaster() *OfUint64BroadCaster {
+	return &OfUint64BroadCaster{
 		in:  make([]<-chan uint64, 0),
 		out: make([]chan<- uint64, 0),
 	}
 }
 
-func (__ *OfUint64MultiCaster) AddSources(ins ...<-chan uint64) *OfUint64MultiCaster {
+func (__ *OfUint64BroadCaster) AddSources(ins ...<-chan uint64) *OfUint64BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUint64MultiCaster) Add(outs ...chan<- uint64) *OfUint64MultiCaster {
+func (__ *OfUint64BroadCaster) AddReceivers(outs ...chan<- uint64) *OfUint64BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUint64MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUint64BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1308,29 +1308,29 @@ func (__ *OfUint64MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUint8MultiCaster struct {
+type OfUint8BroadCaster struct {
 	in  []<-chan uint8
 	out []chan<- uint8
 }
 
-func NewOfUint8MultiCaster() *OfUint8MultiCaster {
-	return &OfUint8MultiCaster{
+func NewOfUint8BroadCaster() *OfUint8BroadCaster {
+	return &OfUint8BroadCaster{
 		in:  make([]<-chan uint8, 0),
 		out: make([]chan<- uint8, 0),
 	}
 }
 
-func (__ *OfUint8MultiCaster) AddSources(ins ...<-chan uint8) *OfUint8MultiCaster {
+func (__ *OfUint8BroadCaster) AddSources(ins ...<-chan uint8) *OfUint8BroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUint8MultiCaster) Add(outs ...chan<- uint8) *OfUint8MultiCaster {
+func (__ *OfUint8BroadCaster) AddReceivers(outs ...chan<- uint8) *OfUint8BroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUint8MultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUint8BroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1380,29 +1380,29 @@ func (__ *OfUint8MultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfUintptrMultiCaster struct {
+type OfUintptrBroadCaster struct {
 	in  []<-chan uintptr
 	out []chan<- uintptr
 }
 
-func NewOfUintptrMultiCaster() *OfUintptrMultiCaster {
-	return &OfUintptrMultiCaster{
+func NewOfUintptrBroadCaster() *OfUintptrBroadCaster {
+	return &OfUintptrBroadCaster{
 		in:  make([]<-chan uintptr, 0),
 		out: make([]chan<- uintptr, 0),
 	}
 }
 
-func (__ *OfUintptrMultiCaster) AddSources(ins ...<-chan uintptr) *OfUintptrMultiCaster {
+func (__ *OfUintptrBroadCaster) AddSources(ins ...<-chan uintptr) *OfUintptrBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfUintptrMultiCaster) Add(outs ...chan<- uintptr) *OfUintptrMultiCaster {
+func (__ *OfUintptrBroadCaster) AddReceivers(outs ...chan<- uintptr) *OfUintptrBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfUintptrMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfUintptrBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
@@ -1452,29 +1452,29 @@ func (__ *OfUintptrMultiCaster) Serve() hexa.StoppableOne {
 	return dctx
 }
 
-type OfInterfaceMultiCaster struct {
+type OfInterfaceBroadCaster struct {
 	in  []<-chan interface{}
 	out []chan<- interface{}
 }
 
-func NewOfInterfaceMultiCaster() *OfInterfaceMultiCaster {
-	return &OfInterfaceMultiCaster{
+func NewOfInterfaceBroadCaster() *OfInterfaceBroadCaster {
+	return &OfInterfaceBroadCaster{
 		in:  make([]<-chan interface{}, 0),
 		out: make([]chan<- interface{}, 0),
 	}
 }
 
-func (__ *OfInterfaceMultiCaster) AddSources(ins ...<-chan interface{}) *OfInterfaceMultiCaster {
+func (__ *OfInterfaceBroadCaster) AddSources(ins ...<-chan interface{}) *OfInterfaceBroadCaster {
 	__.in = append(__.in, ins...)
 	return __
 }
 
-func (__ *OfInterfaceMultiCaster) Add(outs ...chan<- interface{}) *OfInterfaceMultiCaster {
+func (__ *OfInterfaceBroadCaster) AddReceivers(outs ...chan<- interface{}) *OfInterfaceBroadCaster {
 	__.out = append(__.out, outs...)
 	return __
 }
 
-func (__ *OfInterfaceMultiCaster) Serve() hexa.StoppableOne {
+func (__ *OfInterfaceBroadCaster) Serve() hexa.StoppableOne {
 	dctx := hexa.NewContextStop(context.Background())
 	go func() {
 		defer func() {
