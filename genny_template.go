@@ -11,6 +11,14 @@ import (
 
 type Some generic.Type
 
+func _Prefix_SomeClear(ch <-chan Some) int {
+	n := len(ch)
+	for i := 0; i < n; i += 1 {
+		<-ch
+	}
+	return n
+}
+
 type _Prefix_SomeBroadCaster struct {
 	in  []<-chan Some
 	out []chan<- Some
