@@ -18,6 +18,13 @@ func OfFuncBool(ctx context.Context, f func() bool, n int) <-chan bool {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -36,6 +43,13 @@ func OfFuncBoolSlice(ctx context.Context, f func() []bool, n int) <-chan []bool 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -54,6 +68,13 @@ func OfFuncByte(ctx context.Context, f func() byte, n int) <-chan byte {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -72,6 +93,13 @@ func OfFuncByteSlice(ctx context.Context, f func() []byte, n int) <-chan []byte 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -90,6 +118,13 @@ func OfFuncComplex128(ctx context.Context, f func() complex128, n int) <-chan co
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -108,6 +143,13 @@ func OfFuncComplex128Slice(ctx context.Context, f func() []complex128, n int) <-
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -126,6 +168,13 @@ func OfFuncComplex64(ctx context.Context, f func() complex64, n int) <-chan comp
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -144,6 +193,13 @@ func OfFuncComplex64Slice(ctx context.Context, f func() []complex64, n int) <-ch
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -162,6 +218,13 @@ func OfFuncError(ctx context.Context, f func() error, n int) <-chan error {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -180,6 +243,13 @@ func OfFuncErrorSlice(ctx context.Context, f func() []error, n int) <-chan []err
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -198,6 +268,13 @@ func OfFuncFloat32(ctx context.Context, f func() float32, n int) <-chan float32 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -216,6 +293,13 @@ func OfFuncFloat32Slice(ctx context.Context, f func() []float32, n int) <-chan [
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -234,6 +318,13 @@ func OfFuncFloat64(ctx context.Context, f func() float64, n int) <-chan float64 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -252,6 +343,13 @@ func OfFuncFloat64Slice(ctx context.Context, f func() []float64, n int) <-chan [
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -270,6 +368,13 @@ func OfFuncInt(ctx context.Context, f func() int, n int) <-chan int {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -288,6 +393,13 @@ func OfFuncIntSlice(ctx context.Context, f func() []int, n int) <-chan []int {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -306,6 +418,13 @@ func OfFuncInt16(ctx context.Context, f func() int16, n int) <-chan int16 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -324,6 +443,13 @@ func OfFuncInt16Slice(ctx context.Context, f func() []int16, n int) <-chan []int
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -342,6 +468,13 @@ func OfFuncInt32(ctx context.Context, f func() int32, n int) <-chan int32 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -360,6 +493,13 @@ func OfFuncInt32Slice(ctx context.Context, f func() []int32, n int) <-chan []int
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -378,6 +518,13 @@ func OfFuncInt64(ctx context.Context, f func() int64, n int) <-chan int64 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -396,6 +543,13 @@ func OfFuncInt64Slice(ctx context.Context, f func() []int64, n int) <-chan []int
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -414,6 +568,13 @@ func OfFuncInt8(ctx context.Context, f func() int8, n int) <-chan int8 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -432,6 +593,13 @@ func OfFuncInt8Slice(ctx context.Context, f func() []int8, n int) <-chan []int8 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -450,6 +618,13 @@ func OfFuncRune(ctx context.Context, f func() rune, n int) <-chan rune {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -468,6 +643,13 @@ func OfFuncRuneSlice(ctx context.Context, f func() []rune, n int) <-chan []rune 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -486,6 +668,13 @@ func OfFuncString(ctx context.Context, f func() string, n int) <-chan string {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -504,6 +693,13 @@ func OfFuncStringSlice(ctx context.Context, f func() []string, n int) <-chan []s
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -522,6 +718,13 @@ func OfFuncUint(ctx context.Context, f func() uint, n int) <-chan uint {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -540,6 +743,13 @@ func OfFuncUintSlice(ctx context.Context, f func() []uint, n int) <-chan []uint 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -558,6 +768,13 @@ func OfFuncUint16(ctx context.Context, f func() uint16, n int) <-chan uint16 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -576,6 +793,13 @@ func OfFuncUint16Slice(ctx context.Context, f func() []uint16, n int) <-chan []u
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -594,6 +818,13 @@ func OfFuncUint32(ctx context.Context, f func() uint32, n int) <-chan uint32 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -612,6 +843,13 @@ func OfFuncUint32Slice(ctx context.Context, f func() []uint32, n int) <-chan []u
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -630,6 +868,13 @@ func OfFuncUint64(ctx context.Context, f func() uint64, n int) <-chan uint64 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -648,6 +893,13 @@ func OfFuncUint64Slice(ctx context.Context, f func() []uint64, n int) <-chan []u
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -666,6 +918,13 @@ func OfFuncUint8(ctx context.Context, f func() uint8, n int) <-chan uint8 {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -684,6 +943,13 @@ func OfFuncUint8Slice(ctx context.Context, f func() []uint8, n int) <-chan []uin
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -702,6 +968,13 @@ func OfFuncUintptr(ctx context.Context, f func() uintptr, n int) <-chan uintptr 
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -720,6 +993,13 @@ func OfFuncUintptrSlice(ctx context.Context, f func() []uintptr, n int) <-chan [
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -738,6 +1018,13 @@ func OfFuncInterface(ctx context.Context, f func() interface{}, n int) <-chan in
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -756,6 +1043,13 @@ func OfFuncInterfaceSlice(ctx context.Context, f func() []interface{}, n int) <-
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()

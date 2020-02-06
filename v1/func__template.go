@@ -14,6 +14,13 @@ func _Prefix_FuncSome(ctx context.Context, f func() Some, n int) <-chan Some {
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
@@ -32,6 +39,13 @@ func _Prefix_FuncSomeSlice(ctx context.Context, f func() []Some, n int) <-chan [
 			}
 
 			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
 			ch <- t
 		}
 	}()
