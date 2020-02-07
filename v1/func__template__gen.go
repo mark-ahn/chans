@@ -1055,3 +1055,53 @@ func OfFuncInterfaceSlice(ctx context.Context, f func() []interface{}, n int) <-
 	}()
 	return ch
 }
+
+func OfFuncStruct(ctx context.Context, f func() struct{}, n int) <-chan struct{} {
+	ch := make(chan struct{}, n)
+	go func() {
+	loop:
+		for {
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
+			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
+			ch <- t
+		}
+	}()
+	return ch
+}
+
+func OfFuncStructSlice(ctx context.Context, f func() []struct{}, n int) <-chan []struct{} {
+	ch := make(chan []struct{}, n)
+	go func() {
+	loop:
+		for {
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
+			t := f()
+
+			select {
+			case <-ctx.Done():
+				break loop
+			default:
+			}
+
+			ch <- t
+		}
+	}()
+	return ch
+}
