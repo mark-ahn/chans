@@ -15,7 +15,18 @@ func TestFunc(t *testing.T) {
 		return []byte{}
 	}, 1)
 	for _ = range []int{1, 2, 3, 4, 5} {
-		b := <-ch
-		fmt.Println(b)
+		b, ok := <-ch
+		fmt.Println(b, ok)
+	}
+}
+
+func TestFuncSingleShot(t *testing.T) {
+	ch := chans.OfFuncByteSliceSingleShot(context.Background(), func() []byte {
+		<-time.After(200 * time.Millisecond)
+		return []byte{}
+	}, 1)
+	for _ = range []int{1, 2, 3, 4, 5} {
+		b, ok := <-ch
+		fmt.Println(b, ok)
 	}
 }
