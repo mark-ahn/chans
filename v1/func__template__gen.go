@@ -40,7 +40,7 @@ func OfFuncBoolSingleShot(ctx context.Context, f func() bool, n int) <-chan bool
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -48,7 +48,7 @@ func OfFuncBoolSingleShot(ctx context.Context, f func() bool, n int) <-chan bool
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -91,7 +91,7 @@ func OfFuncBoolSliceSingleShot(ctx context.Context, f func() []bool, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -99,7 +99,7 @@ func OfFuncBoolSliceSingleShot(ctx context.Context, f func() []bool, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -142,7 +142,7 @@ func OfFuncByteSingleShot(ctx context.Context, f func() byte, n int) <-chan byte
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -150,7 +150,7 @@ func OfFuncByteSingleShot(ctx context.Context, f func() byte, n int) <-chan byte
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -193,7 +193,7 @@ func OfFuncByteSliceSingleShot(ctx context.Context, f func() []byte, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -201,7 +201,7 @@ func OfFuncByteSliceSingleShot(ctx context.Context, f func() []byte, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -244,7 +244,7 @@ func OfFuncComplex128SingleShot(ctx context.Context, f func() complex128, n int)
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -252,7 +252,7 @@ func OfFuncComplex128SingleShot(ctx context.Context, f func() complex128, n int)
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -295,7 +295,7 @@ func OfFuncComplex128SliceSingleShot(ctx context.Context, f func() []complex128,
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -303,7 +303,7 @@ func OfFuncComplex128SliceSingleShot(ctx context.Context, f func() []complex128,
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -346,7 +346,7 @@ func OfFuncComplex64SingleShot(ctx context.Context, f func() complex64, n int) <
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -354,7 +354,7 @@ func OfFuncComplex64SingleShot(ctx context.Context, f func() complex64, n int) <
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -397,7 +397,7 @@ func OfFuncComplex64SliceSingleShot(ctx context.Context, f func() []complex64, n
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -405,7 +405,7 @@ func OfFuncComplex64SliceSingleShot(ctx context.Context, f func() []complex64, n
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -448,7 +448,7 @@ func OfFuncErrorSingleShot(ctx context.Context, f func() error, n int) <-chan er
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -456,7 +456,7 @@ func OfFuncErrorSingleShot(ctx context.Context, f func() error, n int) <-chan er
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -499,7 +499,7 @@ func OfFuncErrorSliceSingleShot(ctx context.Context, f func() []error, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -507,7 +507,7 @@ func OfFuncErrorSliceSingleShot(ctx context.Context, f func() []error, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -550,7 +550,7 @@ func OfFuncFloat32SingleShot(ctx context.Context, f func() float32, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -558,7 +558,7 @@ func OfFuncFloat32SingleShot(ctx context.Context, f func() float32, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -601,7 +601,7 @@ func OfFuncFloat32SliceSingleShot(ctx context.Context, f func() []float32, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -609,7 +609,7 @@ func OfFuncFloat32SliceSingleShot(ctx context.Context, f func() []float32, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -652,7 +652,7 @@ func OfFuncFloat64SingleShot(ctx context.Context, f func() float64, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -660,7 +660,7 @@ func OfFuncFloat64SingleShot(ctx context.Context, f func() float64, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -703,7 +703,7 @@ func OfFuncFloat64SliceSingleShot(ctx context.Context, f func() []float64, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -711,7 +711,7 @@ func OfFuncFloat64SliceSingleShot(ctx context.Context, f func() []float64, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -754,7 +754,7 @@ func OfFuncIntSingleShot(ctx context.Context, f func() int, n int) <-chan int {
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -762,7 +762,7 @@ func OfFuncIntSingleShot(ctx context.Context, f func() int, n int) <-chan int {
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -805,7 +805,7 @@ func OfFuncIntSliceSingleShot(ctx context.Context, f func() []int, n int) <-chan
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -813,7 +813,7 @@ func OfFuncIntSliceSingleShot(ctx context.Context, f func() []int, n int) <-chan
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -856,7 +856,7 @@ func OfFuncInt16SingleShot(ctx context.Context, f func() int16, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -864,7 +864,7 @@ func OfFuncInt16SingleShot(ctx context.Context, f func() int16, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -907,7 +907,7 @@ func OfFuncInt16SliceSingleShot(ctx context.Context, f func() []int16, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -915,7 +915,7 @@ func OfFuncInt16SliceSingleShot(ctx context.Context, f func() []int16, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -958,7 +958,7 @@ func OfFuncInt32SingleShot(ctx context.Context, f func() int32, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -966,7 +966,7 @@ func OfFuncInt32SingleShot(ctx context.Context, f func() int32, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1009,7 +1009,7 @@ func OfFuncInt32SliceSingleShot(ctx context.Context, f func() []int32, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1017,7 +1017,7 @@ func OfFuncInt32SliceSingleShot(ctx context.Context, f func() []int32, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1060,7 +1060,7 @@ func OfFuncInt64SingleShot(ctx context.Context, f func() int64, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1068,7 +1068,7 @@ func OfFuncInt64SingleShot(ctx context.Context, f func() int64, n int) <-chan in
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1111,7 +1111,7 @@ func OfFuncInt64SliceSingleShot(ctx context.Context, f func() []int64, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1119,7 +1119,7 @@ func OfFuncInt64SliceSingleShot(ctx context.Context, f func() []int64, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1162,7 +1162,7 @@ func OfFuncInt8SingleShot(ctx context.Context, f func() int8, n int) <-chan int8
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1170,7 +1170,7 @@ func OfFuncInt8SingleShot(ctx context.Context, f func() int8, n int) <-chan int8
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1213,7 +1213,7 @@ func OfFuncInt8SliceSingleShot(ctx context.Context, f func() []int8, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1221,7 +1221,7 @@ func OfFuncInt8SliceSingleShot(ctx context.Context, f func() []int8, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1264,7 +1264,7 @@ func OfFuncRuneSingleShot(ctx context.Context, f func() rune, n int) <-chan rune
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1272,7 +1272,7 @@ func OfFuncRuneSingleShot(ctx context.Context, f func() rune, n int) <-chan rune
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1315,7 +1315,7 @@ func OfFuncRuneSliceSingleShot(ctx context.Context, f func() []rune, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1323,7 +1323,7 @@ func OfFuncRuneSliceSingleShot(ctx context.Context, f func() []rune, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1366,7 +1366,7 @@ func OfFuncStringSingleShot(ctx context.Context, f func() string, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1374,7 +1374,7 @@ func OfFuncStringSingleShot(ctx context.Context, f func() string, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1417,7 +1417,7 @@ func OfFuncStringSliceSingleShot(ctx context.Context, f func() []string, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1425,7 +1425,7 @@ func OfFuncStringSliceSingleShot(ctx context.Context, f func() []string, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1468,7 +1468,7 @@ func OfFuncUintSingleShot(ctx context.Context, f func() uint, n int) <-chan uint
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1476,7 +1476,7 @@ func OfFuncUintSingleShot(ctx context.Context, f func() uint, n int) <-chan uint
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1519,7 +1519,7 @@ func OfFuncUintSliceSingleShot(ctx context.Context, f func() []uint, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1527,7 +1527,7 @@ func OfFuncUintSliceSingleShot(ctx context.Context, f func() []uint, n int) <-ch
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1570,7 +1570,7 @@ func OfFuncUint16SingleShot(ctx context.Context, f func() uint16, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1578,7 +1578,7 @@ func OfFuncUint16SingleShot(ctx context.Context, f func() uint16, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1621,7 +1621,7 @@ func OfFuncUint16SliceSingleShot(ctx context.Context, f func() []uint16, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1629,7 +1629,7 @@ func OfFuncUint16SliceSingleShot(ctx context.Context, f func() []uint16, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1672,7 +1672,7 @@ func OfFuncUint32SingleShot(ctx context.Context, f func() uint32, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1680,7 +1680,7 @@ func OfFuncUint32SingleShot(ctx context.Context, f func() uint32, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1723,7 +1723,7 @@ func OfFuncUint32SliceSingleShot(ctx context.Context, f func() []uint32, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1731,7 +1731,7 @@ func OfFuncUint32SliceSingleShot(ctx context.Context, f func() []uint32, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1774,7 +1774,7 @@ func OfFuncUint64SingleShot(ctx context.Context, f func() uint64, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1782,7 +1782,7 @@ func OfFuncUint64SingleShot(ctx context.Context, f func() uint64, n int) <-chan 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1825,7 +1825,7 @@ func OfFuncUint64SliceSingleShot(ctx context.Context, f func() []uint64, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1833,7 +1833,7 @@ func OfFuncUint64SliceSingleShot(ctx context.Context, f func() []uint64, n int) 
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1876,7 +1876,7 @@ func OfFuncUint8SingleShot(ctx context.Context, f func() uint8, n int) <-chan ui
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1884,7 +1884,7 @@ func OfFuncUint8SingleShot(ctx context.Context, f func() uint8, n int) <-chan ui
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1927,7 +1927,7 @@ func OfFuncUint8SliceSingleShot(ctx context.Context, f func() []uint8, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1935,7 +1935,7 @@ func OfFuncUint8SliceSingleShot(ctx context.Context, f func() []uint8, n int) <-
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1978,7 +1978,7 @@ func OfFuncUintptrSingleShot(ctx context.Context, f func() uintptr, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -1986,7 +1986,7 @@ func OfFuncUintptrSingleShot(ctx context.Context, f func() uintptr, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2029,7 +2029,7 @@ func OfFuncUintptrSliceSingleShot(ctx context.Context, f func() []uintptr, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2037,7 +2037,7 @@ func OfFuncUintptrSliceSingleShot(ctx context.Context, f func() []uintptr, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2080,7 +2080,7 @@ func OfFuncInterfaceSingleShot(ctx context.Context, f func() interface{}, n int)
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2088,7 +2088,7 @@ func OfFuncInterfaceSingleShot(ctx context.Context, f func() interface{}, n int)
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2131,7 +2131,7 @@ func OfFuncInterfaceSliceSingleShot(ctx context.Context, f func() []interface{},
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2139,7 +2139,7 @@ func OfFuncInterfaceSliceSingleShot(ctx context.Context, f func() []interface{},
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2182,7 +2182,7 @@ func OfFuncStructSingleShot(ctx context.Context, f func() struct{}, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2190,7 +2190,7 @@ func OfFuncStructSingleShot(ctx context.Context, f func() struct{}, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2233,7 +2233,7 @@ func OfFuncStructSliceSingleShot(ctx context.Context, f func() []struct{}, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -2241,7 +2241,7 @@ func OfFuncStructSliceSingleShot(ctx context.Context, f func() []struct{}, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 

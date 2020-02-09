@@ -36,7 +36,7 @@ func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() Some, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -44,7 +44,7 @@ func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() Some, n int) <-cha
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -87,7 +87,7 @@ func _Prefix_FuncSomeSliceSingleShot(ctx context.Context, f func() []Some, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
@@ -95,7 +95,7 @@ func _Prefix_FuncSomeSliceSingleShot(ctx context.Context, f func() []Some, n int
 
 		select {
 		case <-ctx.Done():
-			break
+			return
 		default:
 		}
 
