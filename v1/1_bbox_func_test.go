@@ -10,9 +10,9 @@ import (
 )
 
 func TestFunc(t *testing.T) {
-	ch := chans.OfFuncByteSlice(context.Background(), func() []byte {
+	ch := chans.OfFuncBytes(context.Background(), func() ([]byte, error) {
 		<-time.After(200 * time.Millisecond)
-		return []byte{}
+		return []byte{}, nil
 	}, 1)
 	for _ = range []int{1, 2, 3, 4, 5} {
 		b, ok := <-ch
@@ -21,9 +21,9 @@ func TestFunc(t *testing.T) {
 }
 
 func TestFuncSingleShot(t *testing.T) {
-	ch := chans.OfFuncByteSliceSingleShot(context.Background(), func() []byte {
+	ch := chans.OfFuncBytesSingleShot(context.Background(), func() ([]byte, error) {
 		<-time.After(200 * time.Millisecond)
-		return []byte{}
+		return []byte{}, nil
 	}, 1)
 	for _ = range []int{1, 2, 3, 4, 5} {
 		b, ok := <-ch

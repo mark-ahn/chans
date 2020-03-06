@@ -12,6 +12,86 @@ import (
 	"github.com/mark-ahn/hexa"
 )
 
+func OfBytesClear(ch <-chan Bytes) int {
+	n := len(ch)
+	for i := 0; i < n; i += 1 {
+		<-ch
+	}
+	return n
+}
+
+type OfBytesBroadCaster struct {
+	in  []<-chan Bytes
+	out []chan<- Bytes
+}
+
+func NewOfBytesBroadCaster() *OfBytesBroadCaster {
+	return &OfBytesBroadCaster{
+		in:  make([]<-chan Bytes, 0),
+		out: make([]chan<- Bytes, 0),
+	}
+}
+
+func (__ *OfBytesBroadCaster) AddSources(ins ...<-chan Bytes) *OfBytesBroadCaster {
+	__.in = append(__.in, ins...)
+	return __
+}
+
+func (__ *OfBytesBroadCaster) AddReceivers(outs ...chan<- Bytes) *OfBytesBroadCaster {
+	__.out = append(__.out, outs...)
+	return __
+}
+
+func (__ *OfBytesBroadCaster) Serve() hexa.StoppableOne {
+	ctx_stop := hexa.NewContextStop(context.Background())
+	go func() {
+		defer func() {
+			for _, ch := range __.out {
+				close(ch)
+			}
+			ctx_stop.InClose()
+		}()
+
+		read_cases := make([]reflect.SelectCase, len(__.in)+1)
+		for i := range __.in {
+			read_cases[i] = reflect.SelectCase{
+				Chan: reflect.ValueOf(__.in[i]),
+				Dir:  reflect.SelectRecv,
+			}
+		}
+		read_cases[len(__.in)] = reflect.SelectCase{
+			Chan: reflect.ValueOf(ctx_stop.InDoneNotify()),
+			Dir:  reflect.SelectRecv,
+		}
+	loop:
+		for {
+			chosen, recv, recvOK := reflect.Select(read_cases)
+			switch {
+			case chosen < len(__.in):
+			default:
+				break loop
+			}
+			if !recvOK {
+				ctx_stop.InBreak(fmt.Errorf("receive channel #%v is broken", chosen))
+				continue
+			}
+			d, ok := recv.Interface().(Bytes)
+			if !ok {
+				ctx_stop.InBreak(fmt.Errorf("receive channel #%v is broken", chosen))
+				continue
+			}
+			for i := range __.out {
+				select {
+				case __.out[i] <- d:
+				default:
+					fmt.Printf("send channel #%v is blocked - skip sending %v", i, d)
+				}
+			}
+		}
+	}()
+	return ctx_stop
+}
+
 func OfBoolClear(ch <-chan bool) int {
 	n := len(ch)
 	for i := 0; i < n; i += 1 {
