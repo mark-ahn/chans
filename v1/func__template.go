@@ -20,10 +20,9 @@ func _Prefix_FuncSome(ctx context.Context, f func() Some, n int) <-chan Some {
 			select {
 			case <-ctx.Done():
 				break loop
-			default:
+			case ch <- t:
 			}
 
-			ch <- t
 		}
 	}()
 	return ch
@@ -45,10 +44,9 @@ func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() Some, n int) <-cha
 		select {
 		case <-ctx.Done():
 			return
-		default:
+		case ch <- t:
 		}
 
-		ch <- t
 	}()
 	return ch
 }
@@ -71,10 +69,9 @@ func _Prefix_FuncSomeSlice(ctx context.Context, f func() []Some, n int) <-chan [
 			select {
 			case <-ctx.Done():
 				break loop
-			default:
+			case ch <- t:
 			}
 
-			ch <- t
 		}
 	}()
 	return ch
@@ -96,10 +93,9 @@ func _Prefix_FuncSomeSliceSingleShot(ctx context.Context, f func() []Some, n int
 		select {
 		case <-ctx.Done():
 			return
-		default:
+		case ch <- t:
 		}
 
-		ch <- t
 	}()
 	return ch
 }
