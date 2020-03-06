@@ -1,8 +1,6 @@
 package chans
 
 import (
-	"fmt"
-
 	"github.com/cheekybits/genny/generic"
 )
 
@@ -12,5 +10,3 @@ type Some generic.Type
 type Other generic.Type
 
 type Bytes = []byte
-
-var StopIterationError = fmt.Errorf("StopIterationError")

@@ -1,6 +1,10 @@
 package chans
 
-import "context"
+import (
+	"context"
+
+	"github.com/mark-ahn/chans/v1/errors"
+)
 
 func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan Some {
 	ch := make(chan Some, n)
@@ -17,7 +21,7 @@ func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan
 
 			t, err := f()
 			switch err {
-			case StopIterationError:
+			case errors.StopIterationError:
 				break loop
 			case nil:
 			default:
