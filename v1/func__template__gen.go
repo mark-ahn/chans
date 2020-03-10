@@ -7,7 +7,7 @@ package chans
 import (
 	"context"
 
-	"github.com/mark-ahn/chans/v1/errors"
+	"github.com/mark-ahn/chans/v1/core"
 )
 
 func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
@@ -25,7 +25,7 @@ func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Byt
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -84,7 +84,7 @@ func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -143,7 +143,7 @@ func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -202,7 +202,7 @@ func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -261,7 +261,7 @@ func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -320,7 +320,7 @@ func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan err
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -379,7 +379,7 @@ func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -438,7 +438,7 @@ func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -497,7 +497,7 @@ func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -556,7 +556,7 @@ func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -615,7 +615,7 @@ func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -674,7 +674,7 @@ func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -733,7 +733,7 @@ func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -792,7 +792,7 @@ func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -851,7 +851,7 @@ func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan s
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -910,7 +910,7 @@ func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -969,7 +969,7 @@ func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan u
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1028,7 +1028,7 @@ func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan u
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1087,7 +1087,7 @@ func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan u
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1146,7 +1146,7 @@ func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uin
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1205,7 +1205,7 @@ func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1264,7 +1264,7 @@ func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) 
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:
@@ -1323,7 +1323,7 @@ func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan
 
 			t, err := f()
 			switch err {
-			case errors.StopIterationError:
+			case core.StopIterationError:
 				break loop
 			case nil:
 			default:

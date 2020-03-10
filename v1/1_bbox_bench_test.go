@@ -20,8 +20,9 @@ func TestSelectModule(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
-	var worker *chans.GoChain
-	worker = chans.NewGoChain(ctx).
+	chain_ctx := chans.NewGoChain(ctx)
+	var worker *chans.Chain
+	worker = chans.WithChain(chain_ctx).
 		CaseRecv(ch1, func(recv interface{}, ok bool) chans.CaseControl {
 			d, ok := recv.(int)
 
@@ -65,8 +66,9 @@ func TestSelectModuleMany(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
-	var worker *chans.GoChain
-	worker = chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx)
+	var worker *chans.Chain
+	worker = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
 			worker.

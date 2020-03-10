@@ -147,19 +147,20 @@ func BenchmarkSelectModule(b *testing.B) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
-	var worker *chans.GoChain
-	worker = chans.NewGoChain(ctx).
+	chain_ctx := chans.NewGoChain(ctx)
+	var chain *chans.Chain
+	chain = chans.WithChain(chain_ctx).
 		CaseRecv(ch1, func(recv interface{}, ok bool) chans.CaseControl {
 			d, ok := recv.(int)
 
-			worker.
+			chain.
 				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
 		}, nil).
 		CaseRecv(ch2, func(recv interface{}, ok bool) chans.CaseControl {
 			d, ok := recv.(int)
 
-			worker.
+			chain.
 				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
 		}, nil).
@@ -168,7 +169,7 @@ func BenchmarkSelectModule(b *testing.B) {
 			if !ok {
 				return chans.CASE_OK
 			}
-			worker.
+			chain.
 				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 
 			return chans.CASE_OK
@@ -189,8 +190,9 @@ func BenchmarkSelectModuleMany(b *testing.B) {
 	}
 	ctx, cancel := context.WithCancel(context.TODO())
 
-	var chain *chans.GoChain
-	chain = chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx)
+	var chain *chans.Chain
+	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
 			chain.
@@ -205,7 +207,7 @@ func BenchmarkSelectModuleMany(b *testing.B) {
 	}
 	defer func() {
 		cancel()
-		<-chain.DoneNotify()
+		<-chain_ctx.DoneNotify()
 	}()
 
 	for i := 0; i < b.N; i += 1 {
@@ -222,8 +224,9 @@ func BenchmarkSelectModuleManyWithType(b *testing.B) {
 	}
 	ctx, cancel := context.WithCancel(context.TODO())
 
-	var chain *chans.GoChain
-	chain = chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx)
+	var chain *chans.Chain
+	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
 			chain.
@@ -236,7 +239,7 @@ func BenchmarkSelectModuleManyWithType(b *testing.B) {
 	}
 	defer func() {
 		cancel()
-		<-chain.DoneNotify()
+		<-chain_ctx.DoneNotify()
 	}()
 
 	for i := 0; i < b.N; i += 1 {

@@ -2,12 +2,14 @@
 // Any changes will be lost if this file is regenerated.
 // see https://github.com/cheekybits/genny
 
-package chans
+package generated
 
-func (__ *GoChain) CaseRecvBytes(ch <-chan Bytes, f func(v Bytes, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+import "github.com/mark-ahn/chans/v1/core"
+
+func (__ *Chain) CaseRecvBytes(ch <-chan Bytes, f func(v Bytes, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -15,17 +17,17 @@ func (__ *GoChain) CaseRecvBytes(ch <-chan Bytes, f func(v Bytes, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -35,24 +37,24 @@ func (__ *GoChain) CaseRecvBytes(ch <-chan Bytes, f func(v Bytes, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendBytes(ch chan<- Bytes, v Bytes, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendBytes(ch chan<- Bytes, v Bytes, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -60,10 +62,10 @@ func (__ *GoChain) CaseSendBytes(ch chan<- Bytes, v Bytes, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectBytes(recv <-chan Bytes, send chan<- Bytes, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectBytes(recv <-chan Bytes, send chan<- Bytes, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan Bytes = recv
@@ -76,7 +78,7 @@ func (__ *GoChain) ConnectBytes(recv <-chan Bytes, send chan<- Bytes, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -85,9 +87,9 @@ func (__ *GoChain) ConnectBytes(recv <-chan Bytes, send chan<- Bytes, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -97,10 +99,10 @@ func (__ *GoChain) ConnectBytes(recv <-chan Bytes, send chan<- Bytes, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvBool(ch <-chan bool, f func(v bool, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvBool(ch <-chan bool, f func(v bool, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -108,17 +110,17 @@ func (__ *GoChain) CaseRecvBool(ch <-chan bool, f func(v bool, ok bool) CaseCont
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -128,24 +130,24 @@ func (__ *GoChain) CaseRecvBool(ch <-chan bool, f func(v bool, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendBool(ch chan<- bool, v bool, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendBool(ch chan<- bool, v bool, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -153,10 +155,10 @@ func (__ *GoChain) CaseSendBool(ch chan<- bool, v bool, onEvent func(sent CaseRe
 	return __
 }
 
-func (__ *GoChain) ConnectBool(recv <-chan bool, send chan<- bool, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectBool(recv <-chan bool, send chan<- bool, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan bool = recv
@@ -169,7 +171,7 @@ func (__ *GoChain) ConnectBool(recv <-chan bool, send chan<- bool, onEvent func(
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -178,9 +180,9 @@ func (__ *GoChain) ConnectBool(recv <-chan bool, send chan<- bool, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -190,10 +192,10 @@ func (__ *GoChain) ConnectBool(recv <-chan bool, send chan<- bool, onEvent func(
 	return __
 }
 
-func (__ *GoChain) CaseRecvByte(ch <-chan byte, f func(v byte, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvByte(ch <-chan byte, f func(v byte, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -201,17 +203,17 @@ func (__ *GoChain) CaseRecvByte(ch <-chan byte, f func(v byte, ok bool) CaseCont
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -221,24 +223,24 @@ func (__ *GoChain) CaseRecvByte(ch <-chan byte, f func(v byte, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendByte(ch chan<- byte, v byte, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendByte(ch chan<- byte, v byte, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -246,10 +248,10 @@ func (__ *GoChain) CaseSendByte(ch chan<- byte, v byte, onEvent func(sent CaseRe
 	return __
 }
 
-func (__ *GoChain) ConnectByte(recv <-chan byte, send chan<- byte, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectByte(recv <-chan byte, send chan<- byte, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan byte = recv
@@ -262,7 +264,7 @@ func (__ *GoChain) ConnectByte(recv <-chan byte, send chan<- byte, onEvent func(
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -271,9 +273,9 @@ func (__ *GoChain) ConnectByte(recv <-chan byte, send chan<- byte, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -283,10 +285,10 @@ func (__ *GoChain) ConnectByte(recv <-chan byte, send chan<- byte, onEvent func(
 	return __
 }
 
-func (__ *GoChain) CaseRecvComplex128(ch <-chan complex128, f func(v complex128, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvComplex128(ch <-chan complex128, f func(v complex128, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -294,17 +296,17 @@ func (__ *GoChain) CaseRecvComplex128(ch <-chan complex128, f func(v complex128,
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -314,24 +316,24 @@ func (__ *GoChain) CaseRecvComplex128(ch <-chan complex128, f func(v complex128,
 	return __
 }
 
-func (__ *GoChain) CaseSendComplex128(ch chan<- complex128, v complex128, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendComplex128(ch chan<- complex128, v complex128, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -339,10 +341,10 @@ func (__ *GoChain) CaseSendComplex128(ch chan<- complex128, v complex128, onEven
 	return __
 }
 
-func (__ *GoChain) ConnectComplex128(recv <-chan complex128, send chan<- complex128, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectComplex128(recv <-chan complex128, send chan<- complex128, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan complex128 = recv
@@ -355,7 +357,7 @@ func (__ *GoChain) ConnectComplex128(recv <-chan complex128, send chan<- complex
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -364,9 +366,9 @@ func (__ *GoChain) ConnectComplex128(recv <-chan complex128, send chan<- complex
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -376,10 +378,10 @@ func (__ *GoChain) ConnectComplex128(recv <-chan complex128, send chan<- complex
 	return __
 }
 
-func (__ *GoChain) CaseRecvComplex64(ch <-chan complex64, f func(v complex64, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvComplex64(ch <-chan complex64, f func(v complex64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -387,17 +389,17 @@ func (__ *GoChain) CaseRecvComplex64(ch <-chan complex64, f func(v complex64, ok
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -407,24 +409,24 @@ func (__ *GoChain) CaseRecvComplex64(ch <-chan complex64, f func(v complex64, ok
 	return __
 }
 
-func (__ *GoChain) CaseSendComplex64(ch chan<- complex64, v complex64, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendComplex64(ch chan<- complex64, v complex64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -432,10 +434,10 @@ func (__ *GoChain) CaseSendComplex64(ch chan<- complex64, v complex64, onEvent f
 	return __
 }
 
-func (__ *GoChain) ConnectComplex64(recv <-chan complex64, send chan<- complex64, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectComplex64(recv <-chan complex64, send chan<- complex64, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan complex64 = recv
@@ -448,7 +450,7 @@ func (__ *GoChain) ConnectComplex64(recv <-chan complex64, send chan<- complex64
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -457,9 +459,9 @@ func (__ *GoChain) ConnectComplex64(recv <-chan complex64, send chan<- complex64
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -469,10 +471,10 @@ func (__ *GoChain) ConnectComplex64(recv <-chan complex64, send chan<- complex64
 	return __
 }
 
-func (__ *GoChain) CaseRecvError(ch <-chan error, f func(v error, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvError(ch <-chan error, f func(v error, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -480,17 +482,17 @@ func (__ *GoChain) CaseRecvError(ch <-chan error, f func(v error, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -500,24 +502,24 @@ func (__ *GoChain) CaseRecvError(ch <-chan error, f func(v error, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendError(ch chan<- error, v error, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendError(ch chan<- error, v error, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -525,10 +527,10 @@ func (__ *GoChain) CaseSendError(ch chan<- error, v error, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectError(recv <-chan error, send chan<- error, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectError(recv <-chan error, send chan<- error, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan error = recv
@@ -541,7 +543,7 @@ func (__ *GoChain) ConnectError(recv <-chan error, send chan<- error, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -550,9 +552,9 @@ func (__ *GoChain) ConnectError(recv <-chan error, send chan<- error, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -562,10 +564,10 @@ func (__ *GoChain) ConnectError(recv <-chan error, send chan<- error, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvFloat32(ch <-chan float32, f func(v float32, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvFloat32(ch <-chan float32, f func(v float32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -573,17 +575,17 @@ func (__ *GoChain) CaseRecvFloat32(ch <-chan float32, f func(v float32, ok bool)
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -593,24 +595,24 @@ func (__ *GoChain) CaseRecvFloat32(ch <-chan float32, f func(v float32, ok bool)
 	return __
 }
 
-func (__ *GoChain) CaseSendFloat32(ch chan<- float32, v float32, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendFloat32(ch chan<- float32, v float32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -618,10 +620,10 @@ func (__ *GoChain) CaseSendFloat32(ch chan<- float32, v float32, onEvent func(se
 	return __
 }
 
-func (__ *GoChain) ConnectFloat32(recv <-chan float32, send chan<- float32, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectFloat32(recv <-chan float32, send chan<- float32, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan float32 = recv
@@ -634,7 +636,7 @@ func (__ *GoChain) ConnectFloat32(recv <-chan float32, send chan<- float32, onEv
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -643,9 +645,9 @@ func (__ *GoChain) ConnectFloat32(recv <-chan float32, send chan<- float32, onEv
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -655,10 +657,10 @@ func (__ *GoChain) ConnectFloat32(recv <-chan float32, send chan<- float32, onEv
 	return __
 }
 
-func (__ *GoChain) CaseRecvFloat64(ch <-chan float64, f func(v float64, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvFloat64(ch <-chan float64, f func(v float64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -666,17 +668,17 @@ func (__ *GoChain) CaseRecvFloat64(ch <-chan float64, f func(v float64, ok bool)
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -686,24 +688,24 @@ func (__ *GoChain) CaseRecvFloat64(ch <-chan float64, f func(v float64, ok bool)
 	return __
 }
 
-func (__ *GoChain) CaseSendFloat64(ch chan<- float64, v float64, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendFloat64(ch chan<- float64, v float64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -711,10 +713,10 @@ func (__ *GoChain) CaseSendFloat64(ch chan<- float64, v float64, onEvent func(se
 	return __
 }
 
-func (__ *GoChain) ConnectFloat64(recv <-chan float64, send chan<- float64, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectFloat64(recv <-chan float64, send chan<- float64, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan float64 = recv
@@ -727,7 +729,7 @@ func (__ *GoChain) ConnectFloat64(recv <-chan float64, send chan<- float64, onEv
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -736,9 +738,9 @@ func (__ *GoChain) ConnectFloat64(recv <-chan float64, send chan<- float64, onEv
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -748,10 +750,10 @@ func (__ *GoChain) ConnectFloat64(recv <-chan float64, send chan<- float64, onEv
 	return __
 }
 
-func (__ *GoChain) CaseRecvInt(ch <-chan int, f func(v int, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInt(ch <-chan int, f func(v int, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -759,17 +761,17 @@ func (__ *GoChain) CaseRecvInt(ch <-chan int, f func(v int, ok bool) CaseControl
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -779,24 +781,24 @@ func (__ *GoChain) CaseRecvInt(ch <-chan int, f func(v int, ok bool) CaseControl
 	return __
 }
 
-func (__ *GoChain) CaseSendInt(ch chan<- int, v int, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInt(ch chan<- int, v int, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -804,10 +806,10 @@ func (__ *GoChain) CaseSendInt(ch chan<- int, v int, onEvent func(sent CaseResul
 	return __
 }
 
-func (__ *GoChain) ConnectInt(recv <-chan int, send chan<- int, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInt(recv <-chan int, send chan<- int, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan int = recv
@@ -820,7 +822,7 @@ func (__ *GoChain) ConnectInt(recv <-chan int, send chan<- int, onEvent func(Cas
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -829,9 +831,9 @@ func (__ *GoChain) ConnectInt(recv <-chan int, send chan<- int, onEvent func(Cas
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -841,10 +843,10 @@ func (__ *GoChain) ConnectInt(recv <-chan int, send chan<- int, onEvent func(Cas
 	return __
 }
 
-func (__ *GoChain) CaseRecvInt16(ch <-chan int16, f func(v int16, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInt16(ch <-chan int16, f func(v int16, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -852,17 +854,17 @@ func (__ *GoChain) CaseRecvInt16(ch <-chan int16, f func(v int16, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -872,24 +874,24 @@ func (__ *GoChain) CaseRecvInt16(ch <-chan int16, f func(v int16, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendInt16(ch chan<- int16, v int16, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInt16(ch chan<- int16, v int16, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -897,10 +899,10 @@ func (__ *GoChain) CaseSendInt16(ch chan<- int16, v int16, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectInt16(recv <-chan int16, send chan<- int16, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInt16(recv <-chan int16, send chan<- int16, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan int16 = recv
@@ -913,7 +915,7 @@ func (__ *GoChain) ConnectInt16(recv <-chan int16, send chan<- int16, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -922,9 +924,9 @@ func (__ *GoChain) ConnectInt16(recv <-chan int16, send chan<- int16, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -934,10 +936,10 @@ func (__ *GoChain) ConnectInt16(recv <-chan int16, send chan<- int16, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvInt32(ch <-chan int32, f func(v int32, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInt32(ch <-chan int32, f func(v int32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -945,17 +947,17 @@ func (__ *GoChain) CaseRecvInt32(ch <-chan int32, f func(v int32, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -965,24 +967,24 @@ func (__ *GoChain) CaseRecvInt32(ch <-chan int32, f func(v int32, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendInt32(ch chan<- int32, v int32, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInt32(ch chan<- int32, v int32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -990,10 +992,10 @@ func (__ *GoChain) CaseSendInt32(ch chan<- int32, v int32, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectInt32(recv <-chan int32, send chan<- int32, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInt32(recv <-chan int32, send chan<- int32, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan int32 = recv
@@ -1006,7 +1008,7 @@ func (__ *GoChain) ConnectInt32(recv <-chan int32, send chan<- int32, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1015,9 +1017,9 @@ func (__ *GoChain) ConnectInt32(recv <-chan int32, send chan<- int32, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1027,10 +1029,10 @@ func (__ *GoChain) ConnectInt32(recv <-chan int32, send chan<- int32, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvInt64(ch <-chan int64, f func(v int64, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInt64(ch <-chan int64, f func(v int64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1038,17 +1040,17 @@ func (__ *GoChain) CaseRecvInt64(ch <-chan int64, f func(v int64, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1058,24 +1060,24 @@ func (__ *GoChain) CaseRecvInt64(ch <-chan int64, f func(v int64, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendInt64(ch chan<- int64, v int64, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInt64(ch chan<- int64, v int64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1083,10 +1085,10 @@ func (__ *GoChain) CaseSendInt64(ch chan<- int64, v int64, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectInt64(recv <-chan int64, send chan<- int64, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInt64(recv <-chan int64, send chan<- int64, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan int64 = recv
@@ -1099,7 +1101,7 @@ func (__ *GoChain) ConnectInt64(recv <-chan int64, send chan<- int64, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1108,9 +1110,9 @@ func (__ *GoChain) ConnectInt64(recv <-chan int64, send chan<- int64, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1120,10 +1122,10 @@ func (__ *GoChain) ConnectInt64(recv <-chan int64, send chan<- int64, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvInt8(ch <-chan int8, f func(v int8, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInt8(ch <-chan int8, f func(v int8, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1131,17 +1133,17 @@ func (__ *GoChain) CaseRecvInt8(ch <-chan int8, f func(v int8, ok bool) CaseCont
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1151,24 +1153,24 @@ func (__ *GoChain) CaseRecvInt8(ch <-chan int8, f func(v int8, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendInt8(ch chan<- int8, v int8, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInt8(ch chan<- int8, v int8, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1176,10 +1178,10 @@ func (__ *GoChain) CaseSendInt8(ch chan<- int8, v int8, onEvent func(sent CaseRe
 	return __
 }
 
-func (__ *GoChain) ConnectInt8(recv <-chan int8, send chan<- int8, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInt8(recv <-chan int8, send chan<- int8, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan int8 = recv
@@ -1192,7 +1194,7 @@ func (__ *GoChain) ConnectInt8(recv <-chan int8, send chan<- int8, onEvent func(
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1201,9 +1203,9 @@ func (__ *GoChain) ConnectInt8(recv <-chan int8, send chan<- int8, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1213,10 +1215,10 @@ func (__ *GoChain) ConnectInt8(recv <-chan int8, send chan<- int8, onEvent func(
 	return __
 }
 
-func (__ *GoChain) CaseRecvRune(ch <-chan rune, f func(v rune, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvRune(ch <-chan rune, f func(v rune, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1224,17 +1226,17 @@ func (__ *GoChain) CaseRecvRune(ch <-chan rune, f func(v rune, ok bool) CaseCont
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1244,24 +1246,24 @@ func (__ *GoChain) CaseRecvRune(ch <-chan rune, f func(v rune, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendRune(ch chan<- rune, v rune, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendRune(ch chan<- rune, v rune, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1269,10 +1271,10 @@ func (__ *GoChain) CaseSendRune(ch chan<- rune, v rune, onEvent func(sent CaseRe
 	return __
 }
 
-func (__ *GoChain) ConnectRune(recv <-chan rune, send chan<- rune, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectRune(recv <-chan rune, send chan<- rune, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan rune = recv
@@ -1285,7 +1287,7 @@ func (__ *GoChain) ConnectRune(recv <-chan rune, send chan<- rune, onEvent func(
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1294,9 +1296,9 @@ func (__ *GoChain) ConnectRune(recv <-chan rune, send chan<- rune, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1306,10 +1308,10 @@ func (__ *GoChain) ConnectRune(recv <-chan rune, send chan<- rune, onEvent func(
 	return __
 }
 
-func (__ *GoChain) CaseRecvString(ch <-chan string, f func(v string, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvString(ch <-chan string, f func(v string, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1317,17 +1319,17 @@ func (__ *GoChain) CaseRecvString(ch <-chan string, f func(v string, ok bool) Ca
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1337,24 +1339,24 @@ func (__ *GoChain) CaseRecvString(ch <-chan string, f func(v string, ok bool) Ca
 	return __
 }
 
-func (__ *GoChain) CaseSendString(ch chan<- string, v string, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendString(ch chan<- string, v string, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1362,10 +1364,10 @@ func (__ *GoChain) CaseSendString(ch chan<- string, v string, onEvent func(sent 
 	return __
 }
 
-func (__ *GoChain) ConnectString(recv <-chan string, send chan<- string, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectString(recv <-chan string, send chan<- string, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan string = recv
@@ -1378,7 +1380,7 @@ func (__ *GoChain) ConnectString(recv <-chan string, send chan<- string, onEvent
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1387,9 +1389,9 @@ func (__ *GoChain) ConnectString(recv <-chan string, send chan<- string, onEvent
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1399,10 +1401,10 @@ func (__ *GoChain) ConnectString(recv <-chan string, send chan<- string, onEvent
 	return __
 }
 
-func (__ *GoChain) CaseRecvUint(ch <-chan uint, f func(v uint, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUint(ch <-chan uint, f func(v uint, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1410,17 +1412,17 @@ func (__ *GoChain) CaseRecvUint(ch <-chan uint, f func(v uint, ok bool) CaseCont
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1430,24 +1432,24 @@ func (__ *GoChain) CaseRecvUint(ch <-chan uint, f func(v uint, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendUint(ch chan<- uint, v uint, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUint(ch chan<- uint, v uint, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1455,10 +1457,10 @@ func (__ *GoChain) CaseSendUint(ch chan<- uint, v uint, onEvent func(sent CaseRe
 	return __
 }
 
-func (__ *GoChain) ConnectUint(recv <-chan uint, send chan<- uint, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUint(recv <-chan uint, send chan<- uint, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uint = recv
@@ -1471,7 +1473,7 @@ func (__ *GoChain) ConnectUint(recv <-chan uint, send chan<- uint, onEvent func(
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1480,9 +1482,9 @@ func (__ *GoChain) ConnectUint(recv <-chan uint, send chan<- uint, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1492,10 +1494,10 @@ func (__ *GoChain) ConnectUint(recv <-chan uint, send chan<- uint, onEvent func(
 	return __
 }
 
-func (__ *GoChain) CaseRecvUint16(ch <-chan uint16, f func(v uint16, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUint16(ch <-chan uint16, f func(v uint16, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1503,17 +1505,17 @@ func (__ *GoChain) CaseRecvUint16(ch <-chan uint16, f func(v uint16, ok bool) Ca
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1523,24 +1525,24 @@ func (__ *GoChain) CaseRecvUint16(ch <-chan uint16, f func(v uint16, ok bool) Ca
 	return __
 }
 
-func (__ *GoChain) CaseSendUint16(ch chan<- uint16, v uint16, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUint16(ch chan<- uint16, v uint16, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1548,10 +1550,10 @@ func (__ *GoChain) CaseSendUint16(ch chan<- uint16, v uint16, onEvent func(sent 
 	return __
 }
 
-func (__ *GoChain) ConnectUint16(recv <-chan uint16, send chan<- uint16, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUint16(recv <-chan uint16, send chan<- uint16, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uint16 = recv
@@ -1564,7 +1566,7 @@ func (__ *GoChain) ConnectUint16(recv <-chan uint16, send chan<- uint16, onEvent
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1573,9 +1575,9 @@ func (__ *GoChain) ConnectUint16(recv <-chan uint16, send chan<- uint16, onEvent
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1585,10 +1587,10 @@ func (__ *GoChain) ConnectUint16(recv <-chan uint16, send chan<- uint16, onEvent
 	return __
 }
 
-func (__ *GoChain) CaseRecvUint32(ch <-chan uint32, f func(v uint32, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUint32(ch <-chan uint32, f func(v uint32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1596,17 +1598,17 @@ func (__ *GoChain) CaseRecvUint32(ch <-chan uint32, f func(v uint32, ok bool) Ca
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1616,24 +1618,24 @@ func (__ *GoChain) CaseRecvUint32(ch <-chan uint32, f func(v uint32, ok bool) Ca
 	return __
 }
 
-func (__ *GoChain) CaseSendUint32(ch chan<- uint32, v uint32, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUint32(ch chan<- uint32, v uint32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1641,10 +1643,10 @@ func (__ *GoChain) CaseSendUint32(ch chan<- uint32, v uint32, onEvent func(sent 
 	return __
 }
 
-func (__ *GoChain) ConnectUint32(recv <-chan uint32, send chan<- uint32, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUint32(recv <-chan uint32, send chan<- uint32, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uint32 = recv
@@ -1657,7 +1659,7 @@ func (__ *GoChain) ConnectUint32(recv <-chan uint32, send chan<- uint32, onEvent
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1666,9 +1668,9 @@ func (__ *GoChain) ConnectUint32(recv <-chan uint32, send chan<- uint32, onEvent
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1678,10 +1680,10 @@ func (__ *GoChain) ConnectUint32(recv <-chan uint32, send chan<- uint32, onEvent
 	return __
 }
 
-func (__ *GoChain) CaseRecvUint64(ch <-chan uint64, f func(v uint64, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUint64(ch <-chan uint64, f func(v uint64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1689,17 +1691,17 @@ func (__ *GoChain) CaseRecvUint64(ch <-chan uint64, f func(v uint64, ok bool) Ca
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1709,24 +1711,24 @@ func (__ *GoChain) CaseRecvUint64(ch <-chan uint64, f func(v uint64, ok bool) Ca
 	return __
 }
 
-func (__ *GoChain) CaseSendUint64(ch chan<- uint64, v uint64, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUint64(ch chan<- uint64, v uint64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1734,10 +1736,10 @@ func (__ *GoChain) CaseSendUint64(ch chan<- uint64, v uint64, onEvent func(sent 
 	return __
 }
 
-func (__ *GoChain) ConnectUint64(recv <-chan uint64, send chan<- uint64, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUint64(recv <-chan uint64, send chan<- uint64, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uint64 = recv
@@ -1750,7 +1752,7 @@ func (__ *GoChain) ConnectUint64(recv <-chan uint64, send chan<- uint64, onEvent
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1759,9 +1761,9 @@ func (__ *GoChain) ConnectUint64(recv <-chan uint64, send chan<- uint64, onEvent
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1771,10 +1773,10 @@ func (__ *GoChain) ConnectUint64(recv <-chan uint64, send chan<- uint64, onEvent
 	return __
 }
 
-func (__ *GoChain) CaseRecvUint8(ch <-chan uint8, f func(v uint8, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUint8(ch <-chan uint8, f func(v uint8, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1782,17 +1784,17 @@ func (__ *GoChain) CaseRecvUint8(ch <-chan uint8, f func(v uint8, ok bool) CaseC
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1802,24 +1804,24 @@ func (__ *GoChain) CaseRecvUint8(ch <-chan uint8, f func(v uint8, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSendUint8(ch chan<- uint8, v uint8, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUint8(ch chan<- uint8, v uint8, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1827,10 +1829,10 @@ func (__ *GoChain) CaseSendUint8(ch chan<- uint8, v uint8, onEvent func(sent Cas
 	return __
 }
 
-func (__ *GoChain) ConnectUint8(recv <-chan uint8, send chan<- uint8, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUint8(recv <-chan uint8, send chan<- uint8, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uint8 = recv
@@ -1843,7 +1845,7 @@ func (__ *GoChain) ConnectUint8(recv <-chan uint8, send chan<- uint8, onEvent fu
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1852,9 +1854,9 @@ func (__ *GoChain) ConnectUint8(recv <-chan uint8, send chan<- uint8, onEvent fu
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1864,10 +1866,10 @@ func (__ *GoChain) ConnectUint8(recv <-chan uint8, send chan<- uint8, onEvent fu
 	return __
 }
 
-func (__ *GoChain) CaseRecvUintptr(ch <-chan uintptr, f func(v uintptr, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvUintptr(ch <-chan uintptr, f func(v uintptr, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1875,17 +1877,17 @@ func (__ *GoChain) CaseRecvUintptr(ch <-chan uintptr, f func(v uintptr, ok bool)
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1895,24 +1897,24 @@ func (__ *GoChain) CaseRecvUintptr(ch <-chan uintptr, f func(v uintptr, ok bool)
 	return __
 }
 
-func (__ *GoChain) CaseSendUintptr(ch chan<- uintptr, v uintptr, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendUintptr(ch chan<- uintptr, v uintptr, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -1920,10 +1922,10 @@ func (__ *GoChain) CaseSendUintptr(ch chan<- uintptr, v uintptr, onEvent func(se
 	return __
 }
 
-func (__ *GoChain) ConnectUintptr(recv <-chan uintptr, send chan<- uintptr, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectUintptr(recv <-chan uintptr, send chan<- uintptr, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan uintptr = recv
@@ -1936,7 +1938,7 @@ func (__ *GoChain) ConnectUintptr(recv <-chan uintptr, send chan<- uintptr, onEv
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -1945,9 +1947,9 @@ func (__ *GoChain) ConnectUintptr(recv <-chan uintptr, send chan<- uintptr, onEv
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1957,10 +1959,10 @@ func (__ *GoChain) ConnectUintptr(recv <-chan uintptr, send chan<- uintptr, onEv
 	return __
 }
 
-func (__ *GoChain) CaseRecvInterface(ch <-chan interface{}, f func(v interface{}, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvInterface(ch <-chan interface{}, f func(v interface{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -1968,17 +1970,17 @@ func (__ *GoChain) CaseRecvInterface(ch <-chan interface{}, f func(v interface{}
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -1988,24 +1990,24 @@ func (__ *GoChain) CaseRecvInterface(ch <-chan interface{}, f func(v interface{}
 	return __
 }
 
-func (__ *GoChain) CaseSendInterface(ch chan<- interface{}, v interface{}, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendInterface(ch chan<- interface{}, v interface{}, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -2013,10 +2015,10 @@ func (__ *GoChain) CaseSendInterface(ch chan<- interface{}, v interface{}, onEve
 	return __
 }
 
-func (__ *GoChain) ConnectInterface(recv <-chan interface{}, send chan<- interface{}, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectInterface(recv <-chan interface{}, send chan<- interface{}, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan interface{} = recv
@@ -2029,7 +2031,7 @@ func (__ *GoChain) ConnectInterface(recv <-chan interface{}, send chan<- interfa
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -2038,9 +2040,9 @@ func (__ *GoChain) ConnectInterface(recv <-chan interface{}, send chan<- interfa
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -2050,10 +2052,10 @@ func (__ *GoChain) ConnectInterface(recv <-chan interface{}, send chan<- interfa
 	return __
 }
 
-func (__ *GoChain) CaseRecvStruct(ch <-chan struct{}, f func(v struct{}, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseRecvStruct(ch <-chan struct{}, f func(v struct{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		for {
@@ -2061,17 +2063,17 @@ func (__ *GoChain) CaseRecvStruct(ch <-chan struct{}, f func(v struct{}, ok bool
 			case v, ok := <-ch:
 				res := f(v, ok)
 				switch {
-				case ok && res == CASE_OK:
+				case ok && res == core.CASE_OK:
 					continue
 				default:
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -2081,24 +2083,24 @@ func (__ *GoChain) CaseRecvStruct(ch <-chan struct{}, f func(v struct{}, ok bool
 	return __
 }
 
-func (__ *GoChain) CaseSendStruct(ch chan<- struct{}, v struct{}, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) CaseSendStruct(ch chan<- struct{}, v struct{}, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *Chain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case <-elseCh:
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
@@ -2106,10 +2108,10 @@ func (__ *GoChain) CaseSendStruct(ch chan<- struct{}, v struct{}, onEvent func(s
 	return __
 }
 
-func (__ *GoChain) ConnectStruct(recv <-chan struct{}, send chan<- struct{}, onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+func (__ *Chain) ConnectStruct(recv <-chan struct{}, send chan<- struct{}, onEvent func(core.CaseResult)) *Chain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var ok bool
 		var recv_ch <-chan struct{} = recv
@@ -2122,7 +2124,7 @@ func (__ *GoChain) ConnectStruct(recv <-chan struct{}, send chan<- struct{}, onE
 			case to_send, ok = <-recv_ch:
 				if !ok {
 					if onEvent != nil {
-						onEvent(CASE_CLOSED)
+						onEvent(core.CASE_CLOSED)
 					}
 					break loop
 				}
@@ -2131,9 +2133,9 @@ func (__ *GoChain) ConnectStruct(recv <-chan struct{}, send chan<- struct{}, onE
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}

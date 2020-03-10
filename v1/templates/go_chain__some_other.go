@@ -1,9 +1,11 @@
-package chans
+package templates
 
-func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func(Some, bool) (Other, error), onEvent func(CaseResult)) *GoChain {
-	__.threads.Add(1)
+import "github.com/mark-ahn/chans/v1/core"
+
+func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func(Some, bool) (Other, error), onEvent func(core.CaseResult)) *GoChain {
+	__.AddThread(1)
 	go func() {
-		__.threads.Done()
+		__.DoneThread()
 
 		var err error
 		var send_ch chan<- Other
@@ -16,7 +18,7 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 			case d, ok := <-recv_ch:
 				to_send, err = mapF(d, ok)
 				switch err {
-				case ErrSkipMap:
+				case core.ErrSkipMap:
 					continue
 				case nil:
 					recv_ch = nil
@@ -25,9 +27,9 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 					if onEvent != nil {
 						switch ok {
 						case false:
-							onEvent(CASE_CLOSED)
+							onEvent(core.CASE_CLOSED)
 						default:
-							onEvent(CASE_STOP)
+							onEvent(core.CASE_STOP)
 						}
 					}
 					break loop
@@ -37,9 +39,9 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 				send_ch = nil
 				recv_ch = recv
 
-			case <-__.ctx.Done():
+			case <-__.Context().Done():
 				if onEvent != nil {
-					onEvent(CASE_CANCEL)
+					onEvent(core.CASE_CANCEL)
 				}
 				break loop
 			}
@@ -49,27 +51,27 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 	return __
 }
 
-func (__ *GoChain) CaseSendSomeOrOther(ch chan<- Some, v Some, onEvent func(sent CaseResult), elseCh <-chan Other, elseF func(v Other, ok bool)) *GoChain {
-	__.threads.Add(1)
+func (__ *GoChain) CaseSendSomeOrOther(ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan Other, elseF func(v Other, ok bool)) *GoChain {
+	__.AddThread(1)
 	go func() {
-		defer __.threads.Done()
+		defer __.DoneThread()
 
 	loop:
 		select {
 		case ch <- v:
 			if onEvent != nil {
-				onEvent(CASE_SENT)
+				onEvent(core.CASE_SENT)
 			}
 		case v, ok := <-elseCh:
 			if elseF != nil {
 				elseF(v, ok)
 			}
 			if onEvent != nil {
-				onEvent(CASE_ELSE)
+				onEvent(core.CASE_ELSE)
 			}
-		case <-__.ctx.Done():
+		case <-__.Context().Done():
 			if onEvent != nil {
-				onEvent(CASE_CANCEL)
+				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
