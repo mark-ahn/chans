@@ -13,12 +13,13 @@ var ErrSkipMap = core.ErrSkipMap
 var ErrStopMap = core.ErrStopMap
 
 type Chain = generated.Chain
+type GoChain = core.GoChain
 
 func WithChain(chain core.Chainable) *Chain {
 	return generated.WithChain(chain)
 }
 
-func NewGoChain(ctx context.Context) *core.GoChain {
+func NewGoChain(ctx context.Context) *GoChain {
 	return core.NewGoChain(ctx)
 }
 
