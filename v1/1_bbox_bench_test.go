@@ -26,26 +26,26 @@ func TestSelectModule(t *testing.T) {
 			d, ok := recv.(int)
 
 			worker.
-				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
-		}).
+		}, nil).
 		CaseRecv(ch2, func(recv interface{}, ok bool) chans.CaseControl {
 			d, ok := recv.(int)
 
 			worker.
-				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
-		}).
+		}, nil).
 		CaseRecv(ch3, func(recv interface{}, ok bool) chans.CaseControl {
 			str, ok := recv.(string)
 			if !ok {
 				return chans.CASE_OK
 			}
 			worker.
-				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 
 			return chans.CASE_OK
-		})
+		}, nil)
 
 	for i := 0; i < 10; i += 1 {
 		ch1 <- 10
@@ -74,10 +74,10 @@ func TestSelectModuleMany(t *testing.T) {
 					d, ok := recv.(int)
 					// fmt.Printf("-> %v\n", i)
 					worker.
-						CaseSend(chs[i+1], d+1, func(recv interface{}, ok bool, sent chans.CaseSend) {
+						CaseSend(chs[i+1], d+1, func(recv interface{}, ok bool, sent chans.CaseResult) {
 						}, nil)
 					return chans.CASE_OK
-				})
+				}, nil)
 		}(i)
 	}
 

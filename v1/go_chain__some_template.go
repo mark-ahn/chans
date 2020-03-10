@@ -1,6 +1,6 @@
 package chans
 
-func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) CaseControl) *GoChain {
+func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
 	__.threads.Add(1)
 	go func() {
 		defer __.threads.Done()
@@ -9,13 +9,20 @@ func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) CaseCont
 		for {
 			select {
 			case v, ok := <-ch:
-				switch f(v, ok) {
-				case CASE_OK:
+				res := f(v, ok)
+				switch {
+				case ok && res == CASE_OK:
 					continue
 				default:
+					if onEvent != nil {
+						onEvent(CASE_CLOSED)
+					}
 					break loop
 				}
 			case <-__.ctx.Done():
+				if onEvent != nil {
+					onEvent(CASE_CANCEL)
+				}
 				break loop
 			}
 		}
@@ -24,7 +31,7 @@ func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) CaseCont
 	return __
 }
 
-func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, f func(sent CaseSend), elseCh <-chan struct{}) *GoChain {
+func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, onEvent func(sent CaseResult), elseCh <-chan struct{}) *GoChain {
 	__.threads.Add(1)
 	go func() {
 		defer __.threads.Done()
@@ -32,16 +39,16 @@ func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, f func(sent CaseSend), e
 	loop:
 		select {
 		case ch <- v:
-			if f != nil {
-				f(CASE_SENT)
+			if onEvent != nil {
+				onEvent(CASE_SENT)
 			}
 		case <-elseCh:
-			if f != nil {
-				f(CASE_ELSE)
+			if onEvent != nil {
+				onEvent(CASE_ELSE)
 			}
 		case <-__.ctx.Done():
-			if f != nil {
-				f(CASE_CANCEL)
+			if onEvent != nil {
+				onEvent(CASE_CANCEL)
 			}
 			break loop
 		}
@@ -49,20 +56,35 @@ func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, f func(sent CaseSend), e
 	return __
 }
 
-func (__ *GoChain) ConnectSome(recv <-chan Some, send chan<- Some) *GoChain {
+func (__ *GoChain) ConnectSome(recv <-chan Some, send chan<- Some, onEvent func(CaseResult)) *GoChain {
 	__.threads.Add(1)
 	go func() {
 		__.threads.Done()
 
+		var ok bool
+		var recv_ch <-chan Some = recv
+		var send_ch chan<- Some
+		var to_send Some
+
 	loop:
 		for {
 			select {
-			case d, ok := <-recv:
+			case to_send, ok = <-recv_ch:
 				if !ok {
+					if onEvent != nil {
+						onEvent(CASE_CLOSED)
+					}
 					break loop
 				}
-				send <- d
+				recv_ch = nil
+				send_ch = send
+			case send_ch <- to_send:
+				send_ch = nil
+				recv_ch = recv
 			case <-__.ctx.Done():
+				if onEvent != nil {
+					onEvent(CASE_CANCEL)
+				}
 				break loop
 			}
 		}

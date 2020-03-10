@@ -153,26 +153,26 @@ func BenchmarkSelectModule(b *testing.B) {
 			d, ok := recv.(int)
 
 			worker.
-				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
-		}).
+		}, nil).
 		CaseRecv(ch2, func(recv interface{}, ok bool) chans.CaseControl {
 			d, ok := recv.(int)
 
 			worker.
-				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 			return chans.CASE_OK
-		}).
+		}, nil).
 		CaseRecv(ch3, func(recv interface{}, ok bool) chans.CaseControl {
 			str, ok := recv.(string)
 			if !ok {
 				return chans.CASE_OK
 			}
 			worker.
-				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseSend) {}, nil)
+				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 
 			return chans.CASE_OK
-		})
+		}, nil)
 
 	for i := 0; i < b.N; i += 1 {
 		ch1 <- 10
@@ -197,10 +197,10 @@ func BenchmarkSelectModuleMany(b *testing.B) {
 				CaseRecvInterface(chs[i], func(recv interface{}, ok bool) chans.CaseControl {
 					d, ok := recv.(int)
 					chain.
-						CaseSendInterface(chs[i+1], d+1, func(sent chans.CaseSend) {
+						CaseSendInterface(chs[i+1], d+1, func(sent chans.CaseResult) {
 						}, nil)
 					return chans.CASE_OK
-				})
+				}, nil)
 		}(i)
 	}
 	defer func() {
@@ -229,9 +229,9 @@ func BenchmarkSelectModuleManyWithType(b *testing.B) {
 			chain.
 				CaseRecvInt(chs[i], func(d int, ok bool) chans.CaseControl {
 					chain.
-						CaseSendIntOrTimeTime(chs[i+1], d+1, nil, nil)
+						CaseSendIntOrTimeTime(chs[i+1], d+1, nil, nil, nil)
 					return chans.CASE_OK
-				})
+				}, nil)
 		}(i)
 	}
 	defer func() {

@@ -19,12 +19,14 @@ const (
 	CASE_DO_NOTHING
 )
 
-type CaseSend int
+type CaseResult int
 
 const (
-	CASE_SENT CaseSend = iota
+	CASE_SENT CaseResult = iota
 	CASE_ELSE
 	CASE_CANCEL
+	CASE_CLOSED
+	CASE_STOP
 )
 
 var ErrStopMap = fmt.Errorf("Stop Map")
@@ -60,7 +62,7 @@ func NewGoChain(ctx context.Context) *GoChain {
 	return __
 }
 
-func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) CaseControl) *GoChain {
+func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) CaseControl, onEvent func(CaseResult)) *GoChain {
 	__.threads.Add(1)
 	go func() {
 		defer __.threads.Done()
@@ -87,9 +89,18 @@ func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) CaseC
 				case CASE_OK:
 					continue
 				default:
+					code := CASE_STOP
+					switch ok {
+					case false:
+						code = CASE_CLOSED
+					}
+					if onEvent != nil {
+						onEvent(code)
+					}
 					break loop
 				}
 			default:
+				onEvent(CASE_CANCEL)
 				break loop
 			}
 		}
@@ -97,7 +108,7 @@ func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) CaseC
 	return __
 }
 
-func (__ *GoChain) CaseSend(ch interface{}, v interface{}, f func(v interface{}, ok bool, sent CaseSend), elseCh interface{}) *GoChain {
+func (__ *GoChain) CaseSend(ch interface{}, v interface{}, f func(v interface{}, ok bool, sent CaseResult), elseCh interface{}) *GoChain {
 	__.threads.Add(1)
 	go func() {
 		defer __.threads.Done()
