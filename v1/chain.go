@@ -8,6 +8,10 @@ import (
 )
 
 type Chainable = core.Chainable
+
+var ErrSkipMap = core.ErrSkipMap
+var ErrStopMap = core.ErrStopMap
+
 type Chain = generated.Chain
 
 func WithChain(chain core.Chainable) *Chain {
