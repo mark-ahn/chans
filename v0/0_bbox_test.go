@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/mark-ahn/chans"
+	"github.com/mark-ahn/chans/v0"
 )
 
 func TestIntCaster(t *testing.T) {
