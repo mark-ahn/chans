@@ -7,6 +7,7 @@ import (
 	"github.com/mark-ahn/chans/v1/generated"
 )
 
+type Chainable = core.Chainable
 type Chain = generated.Chain
 
 func WithChain(chain core.Chainable) *Chain {
