@@ -37,8 +37,17 @@ type Chainable interface {
 type GoChain struct {
 	ctx context.Context
 
-	threads sync.WaitGroup
+	threads *sync.WaitGroup
 	doneCh  chan struct{}
+}
+
+func (__ *GoChain) WithCancel() (*GoChain, func()) {
+	ctx, cancel := context.WithCancel(__.ctx)
+	return &GoChain{
+		ctx:     ctx,
+		threads: __.threads,
+		doneCh:  __.doneCh,
+	}, cancel
 }
 
 func (__ *GoChain) DoneNotify() <-chan struct{} {
@@ -59,9 +68,9 @@ func (__ *GoChain) DoneThread() {
 
 func NewGoChain(ctx context.Context) *GoChain {
 	__ := &GoChain{
-		ctx: ctx,
-
-		doneCh: make(chan struct{}),
+		ctx:     ctx,
+		threads: &sync.WaitGroup{},
+		doneCh:  make(chan struct{}),
 	}
 
 	go func() {
