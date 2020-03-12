@@ -32,6 +32,13 @@ type ThreadCounter interface {
 	Add(int)
 	Done()
 }
+type dummy_thread_counter struct{}
+
+func (_ dummy_thread_counter) Add(int) {}
+func (_ dummy_thread_counter) Done()   {}
+
+var dummy_counter = &dummy_thread_counter{}
+
 type context_key int
 
 const (
@@ -44,7 +51,7 @@ func WithThreadCounter(ctx context.Context, counter ThreadCounter) context.Conte
 func ThreadCounterFrom(ctx context.Context) ThreadCounter {
 	v, ok := ctx.Value(context_key_thread_counter).(ThreadCounter)
 	if !ok {
-		return nil
+		return dummy_counter
 	}
 	return v
 }
