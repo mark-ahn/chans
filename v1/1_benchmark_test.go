@@ -120,8 +120,8 @@ func BenchmarkSelectMany(b *testing.B) {
 				select {
 				case d := <-chs[s+0]:
 					chs[s+1] <- d + 1
-					tout = time.After(time.Second)
-					tout = nil
+					// tout = time.After(time.Second)
+					// tout = nil
 				case <-tout:
 					panic("timeout")
 				case <-ctx.Done():

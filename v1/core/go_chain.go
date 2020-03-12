@@ -28,6 +28,11 @@ const (
 var ErrStopMap = fmt.Errorf("Stop Map")
 var ErrSkipMap = fmt.Errorf("Skip Map")
 
+type ThreadCounter interface {
+	Add(int)
+	Done()
+}
+
 type Chainable interface {
 	Context() context.Context
 	AddThread(int)
