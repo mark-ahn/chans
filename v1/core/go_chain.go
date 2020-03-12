@@ -32,6 +32,22 @@ type ThreadCounter interface {
 	Add(int)
 	Done()
 }
+type context_key int
+
+const (
+	context_key_thread_counter context_key = iota
+)
+
+func WithThreadCounter(ctx context.Context, counter ThreadCounter) context.Context {
+	return context.WithValue(ctx, context_key_thread_counter, counter)
+}
+func ThreadCounterFrom(ctx context.Context) ThreadCounter {
+	v, ok := ctx.Value(context_key_thread_counter).(ThreadCounter)
+	if !ok {
+		return nil
+	}
+	return v
+}
 
 type Chainable interface {
 	Context() context.Context
