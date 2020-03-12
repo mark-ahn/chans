@@ -19,8 +19,8 @@ func WithChain(chain core.Chainable) *Chain {
 	return generated.WithChain(chain)
 }
 
-func NewGoChain(ctx context.Context) *GoChain {
-	return core.NewGoChain(ctx)
+func NewGoChain(ctx context.Context, release func()) *GoChain {
+	return core.NewGoChain(ctx, release)
 }
 
 type CaseControl = core.CaseControl

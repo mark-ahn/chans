@@ -147,7 +147,7 @@ func BenchmarkSelectModule(b *testing.B) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
-	chain_ctx := chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx, nil)
 	var chain *chans.Chain
 	chain = chans.WithChain(chain_ctx).
 		CaseRecv(ch1, func(recv interface{}, ok bool) chans.CaseControl {
@@ -190,7 +190,7 @@ func BenchmarkSelectModuleMany(b *testing.B) {
 	}
 	ctx, cancel := context.WithCancel(context.TODO())
 
-	chain_ctx := chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx, nil)
 	var chain *chans.Chain
 	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
@@ -224,7 +224,7 @@ func BenchmarkSelectModuleManyWithType(b *testing.B) {
 	}
 	ctx, cancel := context.WithCancel(context.TODO())
 
-	chain_ctx := chans.NewGoChain(ctx)
+	chain_ctx := chans.NewGoChain(ctx, nil)
 	var chain *chans.Chain
 	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {

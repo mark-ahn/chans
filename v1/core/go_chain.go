@@ -66,7 +66,7 @@ func (__ *GoChain) DoneThread() {
 	__.threads.Done()
 }
 
-func NewGoChain(ctx context.Context) *GoChain {
+func NewGoChain(ctx context.Context, release func()) *GoChain {
 	__ := &GoChain{
 		ctx:     ctx,
 		threads: &sync.WaitGroup{},
@@ -75,7 +75,12 @@ func NewGoChain(ctx context.Context) *GoChain {
 
 	go func() {
 		defer close(__.doneCh)
-		defer __.threads.Wait()
+		defer func() {
+			__.threads.Wait()
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
