@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/mark-ahn/chans/v1"
+	"github.com/mark-ahn/syncs"
 )
 
 func BenchmarkSelect(b *testing.B) {
@@ -144,36 +146,35 @@ func BenchmarkSelectModule(b *testing.B) {
 
 	ch_str := make(chan interface{}, 1)
 
-	ctx, cancel := context.WithCancel(context.TODO())
-	defer cancel()
+	rctx, cancel := context.WithCancel(context.TODO())
 
-	chain_ctx := chans.NewGoChain(ctx, nil)
-	var chain *chans.Chain
-	chain = chans.WithChain(chain_ctx).
-		CaseRecv(ch1, func(recv interface{}, ok bool) chans.CaseControl {
-			d, ok := recv.(int)
+	ctx, done_ch := syncs.WithThreadDoneNotify(rctx, &sync.WaitGroup{})
+	defer func() {
+		cancel()
+		<-done_ch
+	}()
 
-			chain.
-				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
+	chans.CaseRecv(ctx, ch1, func(recv interface{}, ok bool) chans.CaseControl {
+		d, ok := recv.(int)
+
+		chans.CaseSend(ctx, ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
+		return chans.CASE_OK
+	}, nil)
+	chans.CaseRecv(ctx, ch2, func(recv interface{}, ok bool) chans.CaseControl {
+		d, ok := recv.(int)
+
+		chans.CaseSend(ctx, ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
+		return chans.CASE_OK
+	}, nil)
+	chans.CaseRecv(ctx, ch3, func(recv interface{}, ok bool) chans.CaseControl {
+		str, ok := recv.(string)
+		if !ok {
 			return chans.CASE_OK
-		}, nil).
-		CaseRecv(ch2, func(recv interface{}, ok bool) chans.CaseControl {
-			d, ok := recv.(int)
+		}
+		chans.CaseSend(ctx, ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 
-			chain.
-				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
-			return chans.CASE_OK
-		}, nil).
-		CaseRecv(ch3, func(recv interface{}, ok bool) chans.CaseControl {
-			str, ok := recv.(string)
-			if !ok {
-				return chans.CASE_OK
-			}
-			chain.
-				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
-
-			return chans.CASE_OK
-		}, nil)
+		return chans.CASE_OK
+	}, nil)
 
 	for i := 0; i < b.N; i += 1 {
 		ch1 <- 10
@@ -188,26 +189,22 @@ func BenchmarkSelectModuleMany(b *testing.B) {
 	for i := range chs {
 		chs[i] = make(chan interface{}, 1)
 	}
-	ctx, cancel := context.WithCancel(context.TODO())
+	rctx, cancel := context.WithCancel(context.TODO())
+	ctx, done_ch := syncs.WithThreadDoneNotify(rctx, &sync.WaitGroup{})
 
-	chain_ctx := chans.NewGoChain(ctx, nil)
-	var chain *chans.Chain
-	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
-			chain.
-				CaseRecvInterface(chs[i], func(recv interface{}, ok bool) chans.CaseControl {
-					d, ok := recv.(int)
-					chain.
-						CaseSendInterface(chs[i+1], d+1, func(sent chans.CaseResult) {
-						}, nil)
-					return chans.CASE_OK
+			chans.CaseRecvInterface(ctx, chs[i], func(recv interface{}, ok bool) chans.CaseControl {
+				d, ok := recv.(int)
+				chans.CaseSendInterface(ctx, chs[i+1], d+1, func(sent chans.CaseResult) {
 				}, nil)
+				return chans.CASE_OK
+			}, nil)
 		}(i)
 	}
 	defer func() {
 		cancel()
-		<-chain_ctx.DoneNotify()
+		<-done_ch
 	}()
 
 	for i := 0; i < b.N; i += 1 {
@@ -222,24 +219,20 @@ func BenchmarkSelectModuleManyWithType(b *testing.B) {
 	for i := range chs {
 		chs[i] = make(chan int, 1)
 	}
-	ctx, cancel := context.WithCancel(context.TODO())
+	rctx, cancel := context.WithCancel(context.TODO())
+	ctx, done_ch := syncs.WithThreadDoneNotify(rctx, &sync.WaitGroup{})
 
-	chain_ctx := chans.NewGoChain(ctx, nil)
-	var chain *chans.Chain
-	chain = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
-			chain.
-				CaseRecvInt(chs[i], func(d int, ok bool) chans.CaseControl {
-					chain.
-						CaseSendIntOrTimeTime(chs[i+1], d+1, nil, nil, nil)
-					return chans.CASE_OK
-				}, nil)
+			chans.CaseRecvInt(ctx, chs[i], func(d int, ok bool) chans.CaseControl {
+				chans.CaseSendIntOrTimeTime(ctx, chs[i+1], d+1, nil, nil, nil)
+				return chans.CASE_OK
+			}, nil)
 		}(i)
 	}
 	defer func() {
 		cancel()
-		<-chain_ctx.DoneNotify()
+		<-done_ch
 	}()
 
 	for i := 0; i < b.N; i += 1 {

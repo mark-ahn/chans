@@ -1,22 +1,20 @@
 package templates
 
 import (
+	"context"
 	"fmt"
 	"reflect"
 
 	"github.com/mark-ahn/chans/v1/core"
+	"github.com/mark-ahn/syncs"
 )
 
-type GoChain struct{ core.Chainable }
+func CaseRecv(ctx context.Context, ch interface{}, f func(v interface{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-func WithGoChain(chain core.Chainable) *GoChain {
-	return &GoChain{Chainable: chain}
-}
-
-func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *GoChain {
-	__.AddThread(1)
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 		cases := []reflect.SelectCase{
 			{
@@ -25,7 +23,7 @@ func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) core.
 			},
 			{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(__.Context().Done()),
+				Chan: reflect.ValueOf(ctx.Done()),
 			},
 		}
 
@@ -58,13 +56,14 @@ func (__ *GoChain) CaseRecv(ch interface{}, f func(v interface{}, ok bool) core.
 			}
 		}
 	}()
-	return __
 }
 
-func (__ *GoChain) CaseSend(ch interface{}, v interface{}, f func(v interface{}, ok bool, sent core.CaseResult), elseCh interface{}) *GoChain {
-	__.AddThread(1)
+func CaseSend(ctx context.Context, ch interface{}, v interface{}, f func(v interface{}, ok bool, sent core.CaseResult), elseCh interface{}) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 		cases := []reflect.SelectCase{
 			{
@@ -78,7 +77,7 @@ func (__ *GoChain) CaseSend(ch interface{}, v interface{}, f func(v interface{},
 			},
 			{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(__.Context().Done()),
+				Chan: reflect.ValueOf(ctx.Done()),
 			},
 		}
 
@@ -93,10 +92,11 @@ func (__ *GoChain) CaseSend(ch interface{}, v interface{}, f func(v interface{},
 		}
 
 	}()
-	return __
 }
 
-func (__ *GoChain) Connect(recv interface{}, send interface{}) error {
+func Connect(ctx context.Context, recv interface{}, send interface{}) error {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	recv_v := reflect.ValueOf(recv)
 	send_v := reflect.ValueOf(send)
 
@@ -104,9 +104,9 @@ func (__ *GoChain) Connect(recv interface{}, send interface{}) error {
 		return fmt.Errorf("type is not matched")
 	}
 
-	__.AddThread(1)
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 		r_cases := []reflect.SelectCase{
 			{
@@ -115,7 +115,7 @@ func (__ *GoChain) Connect(recv interface{}, send interface{}) error {
 			},
 			{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(__.Context().Done()),
+				Chan: reflect.ValueOf(ctx.Done()),
 			},
 		}
 
@@ -126,7 +126,7 @@ func (__ *GoChain) Connect(recv interface{}, send interface{}) error {
 			},
 			{
 				Dir:  reflect.SelectRecv,
-				Chan: reflect.ValueOf(__.Context().Done()),
+				Chan: reflect.ValueOf(ctx.Done()),
 			},
 		}
 

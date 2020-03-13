@@ -1,13 +1,18 @@
 package templates
 
 import (
+	"context"
+
 	"github.com/mark-ahn/chans/v1/core"
+	"github.com/mark-ahn/syncs"
 )
 
-func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) core.CaseControl, onEvent func(core.CaseResult)) *GoChain {
-	__.AddThread(1)
+func CaseRecvSome(ctx context.Context, ch <-chan Some, f func(v Some, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 	loop:
 		for {
@@ -23,7 +28,7 @@ func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) core.Cas
 					}
 					break loop
 				}
-			case <-__.Context().Done():
+			case <-ctx.Done():
 				if onEvent != nil {
 					onEvent(core.CASE_CANCEL)
 				}
@@ -32,13 +37,14 @@ func (__ *GoChain) CaseRecvSome(ch <-chan Some, f func(v Some, ok bool) core.Cas
 		}
 
 	}()
-	return __
 }
 
-func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) *GoChain {
-	__.AddThread(1)
+func CaseSendSome(ctx context.Context, ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 	loop:
 		select {
@@ -50,20 +56,21 @@ func (__ *GoChain) CaseSendSome(ch chan<- Some, v Some, onEvent func(sent core.C
 			if onEvent != nil {
 				onEvent(core.CASE_ELSE)
 			}
-		case <-__.Context().Done():
+		case <-ctx.Done():
 			if onEvent != nil {
 				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
 	}()
-	return __
 }
 
-func (__ *GoChain) ConnectSome(recv <-chan Some, send chan<- Some, onEvent func(core.CaseResult)) *GoChain {
-	__.AddThread(1)
+func ConnectSome(ctx context.Context, recv <-chan Some, send chan<- Some, onEvent func(core.CaseResult)) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		__.DoneThread()
+		defer cnt.Done()
 
 		var ok bool
 		var recv_ch <-chan Some = recv
@@ -85,7 +92,7 @@ func (__ *GoChain) ConnectSome(recv <-chan Some, send chan<- Some, onEvent func(
 			case send_ch <- to_send:
 				send_ch = nil
 				recv_ch = recv
-			case <-__.Context().Done():
+			case <-ctx.Done():
 				if onEvent != nil {
 					onEvent(core.CASE_CANCEL)
 				}
@@ -94,5 +101,4 @@ func (__ *GoChain) ConnectSome(recv <-chan Some, send chan<- Some, onEvent func(
 		}
 	}()
 
-	return __
 }

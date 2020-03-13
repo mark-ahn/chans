@@ -1,11 +1,18 @@
 package templates
 
-import "github.com/mark-ahn/chans/v1/core"
+import (
+	"context"
 
-func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func(Some, bool) (Other, error), onEvent func(core.CaseResult)) *GoChain {
-	__.AddThread(1)
+	"github.com/mark-ahn/chans/v1/core"
+	"github.com/mark-ahn/syncs"
+)
+
+func MapSomeToOther(ctx context.Context, recv <-chan Some, send chan<- Other, mapF func(Some, bool) (Other, error), onEvent func(core.CaseResult)) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		__.DoneThread()
+		defer cnt.Done()
 
 		var err error
 		var send_ch chan<- Other
@@ -39,7 +46,7 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 				send_ch = nil
 				recv_ch = recv
 
-			case <-__.Context().Done():
+			case <-ctx.Done():
 				if onEvent != nil {
 					onEvent(core.CASE_CANCEL)
 				}
@@ -48,13 +55,14 @@ func (__ *GoChain) MapSomeToOther(recv <-chan Some, send chan<- Other, mapF func
 		}
 	}()
 
-	return __
 }
 
-func (__ *GoChain) CaseSendSomeOrOther(ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan Other, elseF func(v Other, ok bool)) *GoChain {
-	__.AddThread(1)
+func CaseSendSomeOrOther(ctx context.Context, ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan Other, elseF func(v Other, ok bool)) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
+	cnt.Add(1)
 	go func() {
-		defer __.DoneThread()
+		defer cnt.Done()
 
 	loop:
 		select {
@@ -69,12 +77,11 @@ func (__ *GoChain) CaseSendSomeOrOther(ch chan<- Some, v Some, onEvent func(sent
 			if onEvent != nil {
 				onEvent(core.CASE_ELSE)
 			}
-		case <-__.Context().Done():
+		case <-ctx.Done():
 			if onEvent != nil {
 				onEvent(core.CASE_CANCEL)
 			}
 			break loop
 		}
 	}()
-	return __
 }

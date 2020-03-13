@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"sync"
 	"testing"
 	"time"
 
 	"github.com/mark-ahn/chans/v1"
+	"github.com/mark-ahn/syncs"
 )
 
 func TestSelectModule(t *testing.T) {
@@ -17,36 +19,34 @@ func TestSelectModule(t *testing.T) {
 
 	ch_str := make(chan interface{}, 1)
 
-	ctx, cancel := context.WithCancel(context.TODO())
-	defer cancel()
+	rctx, cancel := context.WithCancel(context.TODO())
+	ctx, done_ch := syncs.WithThreadDoneNotify(rctx, &sync.WaitGroup{})
+	defer func() {
+		cancel()
+		<-done_ch
+	}()
 
-	chain_ctx := chans.NewGoChain(ctx, nil)
-	var worker *chans.Chain
-	worker = chans.WithChain(chain_ctx).
-		CaseRecv(ch1, func(recv interface{}, ok bool) chans.CaseControl {
-			d, ok := recv.(int)
+	chans.CaseRecv(ctx, ch1, func(recv interface{}, ok bool) chans.CaseControl {
+		d, ok := recv.(int)
 
-			worker.
-				CaseSend(ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
+		chans.CaseSend(ctx, ch2, d+1, func(d interface{}, ok bool, sent chans.CaseResult) {}, nil)
+		return chans.CASE_OK
+	}, nil)
+	chans.CaseRecv(ctx, ch2, func(recv interface{}, ok bool) chans.CaseControl {
+		d, ok := recv.(int)
+
+		chans.CaseSend(ctx, ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
+		return chans.CASE_OK
+	}, nil)
+	chans.CaseRecv(ctx, ch3, func(recv interface{}, ok bool) chans.CaseControl {
+		str, ok := recv.(string)
+		if !ok {
 			return chans.CASE_OK
-		}, nil).
-		CaseRecv(ch2, func(recv interface{}, ok bool) chans.CaseControl {
-			d, ok := recv.(int)
+		}
+		chans.CaseSend(ctx, ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
 
-			worker.
-				CaseSend(ch3, strconv.FormatInt(int64(d), 10), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
-			return chans.CASE_OK
-		}, nil).
-		CaseRecv(ch3, func(recv interface{}, ok bool) chans.CaseControl {
-			str, ok := recv.(string)
-			if !ok {
-				return chans.CASE_OK
-			}
-			worker.
-				CaseSend(ch_str, fmt.Sprintf("[%v]", str), func(r interface{}, ok bool, sent chans.CaseResult) {}, nil)
-
-			return chans.CASE_OK
-		}, nil)
+		return chans.CASE_OK
+	}, nil)
 
 	for i := 0; i < 10; i += 1 {
 		ch1 <- 10
@@ -64,22 +64,21 @@ func TestSelectModuleMany(t *testing.T) {
 		chs[i] = make(chan interface{}, 1)
 	}
 	ctx, cancel := context.WithCancel(context.TODO())
-	defer cancel()
+	ctx, done_ch := syncs.WithThreadDoneNotify(ctx, &sync.WaitGroup{})
+	defer func() {
+		cancel()
+		<-done_ch
+	}()
 
-	chain_ctx := chans.NewGoChain(ctx, nil)
-	var worker *chans.Chain
-	worker = chans.WithChain(chain_ctx)
 	for i := 0; i < l; i += 1 {
 		func(i int) {
-			worker.
-				CaseRecv(chs[i], func(recv interface{}, ok bool) chans.CaseControl {
-					d, ok := recv.(int)
-					// fmt.Printf("-> %v\n", i)
-					worker.
-						CaseSend(chs[i+1], d+1, func(recv interface{}, ok bool, sent chans.CaseResult) {
-						}, nil)
-					return chans.CASE_OK
+			chans.CaseRecv(ctx, chs[i], func(recv interface{}, ok bool) chans.CaseControl {
+				d, ok := recv.(int)
+				// fmt.Printf("-> %v\n", i)
+				chans.CaseSend(ctx, chs[i+1], d+1, func(recv interface{}, ok bool, sent chans.CaseResult) {
 				}, nil)
+				return chans.CASE_OK
+			}, nil)
 		}(i)
 	}
 
