@@ -3,7 +3,6 @@ package chans
 import (
 	"context"
 
-	"github.com/mark-ahn/chans/v1/core"
 	"github.com/mark-ahn/syncs"
 )
 
@@ -20,7 +19,7 @@ func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan
 		for {
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:

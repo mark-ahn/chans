@@ -7,25 +7,23 @@ package chans
 import (
 	"context"
 
-	"github.com/mark-ahn/chans/v1/core"
+	"github.com/mark-ahn/syncs"
 )
 
 func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan Bytes, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -44,15 +42,13 @@ func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Byt
 }
 
 func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
-	ch := make(chan Bytes, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan Bytes, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -70,21 +66,19 @@ func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) 
 }
 
 func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan bool, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -103,15 +97,13 @@ func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool 
 }
 
 func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) <-chan bool {
-	ch := make(chan bool, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan bool, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -129,21 +121,19 @@ func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) <-
 }
 
 func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan byte, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -162,15 +152,13 @@ func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte 
 }
 
 func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) <-chan byte {
-	ch := make(chan byte, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan byte, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -188,21 +176,19 @@ func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) <-
 }
 
 func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan complex128, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -221,15 +207,13 @@ func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) 
 }
 
 func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
-	ch := make(chan complex128, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan complex128, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -247,21 +231,19 @@ func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error
 }
 
 func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan complex64, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -280,15 +262,13 @@ func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-
 }
 
 func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
-	ch := make(chan complex64, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan complex64, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -306,21 +286,19 @@ func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error),
 }
 
 func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan error {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan error, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -339,15 +317,13 @@ func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan err
 }
 
 func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) <-chan error {
-	ch := make(chan error, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan error, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -365,21 +341,19 @@ func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) 
 }
 
 func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan float32, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -398,15 +372,13 @@ func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan
 }
 
 func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
-	ch := make(chan float32, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan float32, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -424,21 +396,19 @@ func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n i
 }
 
 func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan float64, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -457,15 +427,13 @@ func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan
 }
 
 func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
-	ch := make(chan float64, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan float64, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -483,21 +451,19 @@ func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n i
 }
 
 func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan int, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -516,15 +482,13 @@ func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
 }
 
 func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) <-chan int {
-	ch := make(chan int, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan int, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -542,21 +506,19 @@ func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) <-ch
 }
 
 func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan int16, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -575,15 +537,13 @@ func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int
 }
 
 func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
-	ch := make(chan int16, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan int16, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -601,21 +561,19 @@ func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) 
 }
 
 func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan int32, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -634,15 +592,13 @@ func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int
 }
 
 func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
-	ch := make(chan int32, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan int32, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -660,21 +616,19 @@ func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) 
 }
 
 func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan int64, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -693,15 +647,13 @@ func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int
 }
 
 func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
-	ch := make(chan int64, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan int64, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -719,21 +671,19 @@ func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) 
 }
 
 func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan int8, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -752,15 +702,13 @@ func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 
 }
 
 func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
-	ch := make(chan int8, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan int8, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -778,21 +726,19 @@ func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) <-
 }
 
 func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan rune, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -811,15 +757,13 @@ func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune 
 }
 
 func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) <-chan rune {
-	ch := make(chan rune, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan rune, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -837,21 +781,19 @@ func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) <-
 }
 
 func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan string {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan string, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -870,15 +812,13 @@ func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan s
 }
 
 func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int) <-chan string {
-	ch := make(chan string, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan string, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -896,21 +836,19 @@ func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int
 }
 
 func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uint, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -929,15 +867,13 @@ func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint 
 }
 
 func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) <-chan uint {
-	ch := make(chan uint, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uint, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -955,21 +891,19 @@ func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) <-
 }
 
 func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uint16, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -988,15 +922,13 @@ func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan u
 }
 
 func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
-	ch := make(chan uint16, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uint16, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1014,21 +946,19 @@ func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int
 }
 
 func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uint32, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1047,15 +977,13 @@ func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan u
 }
 
 func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
-	ch := make(chan uint32, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uint32, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1073,21 +1001,19 @@ func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int
 }
 
 func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uint64, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1106,15 +1032,13 @@ func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan u
 }
 
 func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
-	ch := make(chan uint64, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uint64, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1132,21 +1056,19 @@ func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int
 }
 
 func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uint8, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1165,15 +1087,13 @@ func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uin
 }
 
 func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
-	ch := make(chan uint8, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uint8, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1191,21 +1111,19 @@ func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) 
 }
 
 func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan uintptr, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1224,15 +1142,13 @@ func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan
 }
 
 func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
-	ch := make(chan uintptr, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan uintptr, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1250,21 +1166,19 @@ func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n i
 }
 
 func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan interface{}, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1283,15 +1197,13 @@ func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) 
 }
 
 func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
-	ch := make(chan interface{}, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan interface{}, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {
@@ -1309,21 +1221,19 @@ func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error
 }
 
 func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	ch := make(chan struct{}, n)
+	cnt.Add(1)
 	go func() {
+		defer cnt.Done()
 		defer close(ch)
 
 	loop:
 		for {
-			select {
-			case <-ctx.Done():
-				break loop
-			default:
-			}
-
 			t, err := f()
 			switch err {
-			case core.StopIterationError:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1342,15 +1252,13 @@ func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan
 }
 
 func OfFuncStructSingleShot(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
-	ch := make(chan struct{}, n)
-	go func() {
-		defer close(ch)
+	cnt := syncs.ThreadCounterFrom(ctx)
 
-		select {
-		case <-ctx.Done():
-			return
-		default:
-		}
+	ch := make(chan struct{}, n)
+	cnt.Add(1)
+	go func() {
+		defer cnt.Done()
+		defer close(ch)
 
 		t, err := f()
 		if err != nil {

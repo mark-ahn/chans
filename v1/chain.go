@@ -11,6 +11,7 @@ type Chainable = core.Chainable
 
 var ErrSkipMap = core.ErrSkipMap
 var ErrStopMap = core.ErrStopMap
+var ErrStopIter = core.ErrStopMap
 
 type Chain = generated.Chain
 type GoChain = core.GoChain
