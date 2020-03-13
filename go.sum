@@ -3,3 +3,5 @@ github.com/cheekybits/genny v1.0.0/go.mod h1:+tQajlRqAUrPI7DOSpB0XAqZYtQakVtB7wX
 github.com/mark-ahn/async v0.0.0-20200306170945-21806e7c4682 h1:vKVmt0Sy2WrMALXH4+VftjVHdu9lY6cC0EWt0rj/ngA=
 github.com/mark-ahn/hexa v0.0.0-20190530133308-5fc44b8f4ab2 h1:+AgmXvwYaI1CdLWeBzIiv3MmS4twf0KUyQttqBFILHs=
 github.com/mark-ahn/hexa v0.0.0-20190530133308-5fc44b8f4ab2/go.mod h1:ew26qPqaOjJ9f/3sdgU0UEydTrFngVR5ahJFOFKkPWI=
+github.com/mark-ahn/syncs v0.0.0-20200313110653-eef471971b87 h1:qSEmlwYhOZu8RtK3kN+7ZpPmEQjeVql9G/OveUVGN4s=
+github.com/mark-ahn/syncs v0.0.0-20200313110653-eef471971b87/go.mod h1:rY4QWbGbyldo7+hyhEL/dq+VWzbodnCMlrq4YnBFzKI=

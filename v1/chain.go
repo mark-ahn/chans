@@ -15,14 +15,6 @@ var ErrStopMap = core.ErrStopMap
 type Chain = generated.Chain
 type GoChain = core.GoChain
 
-func WithThreadCounter(ctx context.Context, counter core.ThreadCounter) context.Context {
-	return core.WithThreadCounter(ctx, counter)
-}
-
-func ThreadCounterFrom(ctx context.Context) core.ThreadCounter {
-	return core.ThreadCounterFrom(ctx)
-}
-
 func WithChain(chain core.Chainable) *Chain {
 	return generated.WithChain(chain)
 }

@@ -28,34 +28,6 @@ const (
 var ErrStopMap = fmt.Errorf("Stop Map")
 var ErrSkipMap = fmt.Errorf("Skip Map")
 
-type ThreadCounter interface {
-	Add(int)
-	Done()
-}
-type dummy_thread_counter struct{}
-
-func (_ dummy_thread_counter) Add(int) {}
-func (_ dummy_thread_counter) Done()   {}
-
-var dummy_counter = &dummy_thread_counter{}
-
-type context_key int
-
-const (
-	context_key_thread_counter context_key = iota
-)
-
-func WithThreadCounter(ctx context.Context, counter ThreadCounter) context.Context {
-	return context.WithValue(ctx, context_key_thread_counter, counter)
-}
-func ThreadCounterFrom(ctx context.Context) ThreadCounter {
-	v, ok := ctx.Value(context_key_thread_counter).(ThreadCounter)
-	if !ok {
-		return dummy_counter
-	}
-	return v
-}
-
 type Chainable interface {
 	Context() context.Context
 	AddThread(int)
