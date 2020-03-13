@@ -7,13 +7,25 @@ import (
 )
 
 func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan Some {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan Some, n)
+	_Prefix_FuncSomeWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -34,17 +46,28 @@ func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan
 
 		}
 	}()
-	return ch
 }
 
 func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() (Some, error), n int) <-chan Some {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan Some, n)
+	_Prefix_FuncSomeWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func _Prefix_FuncSomeWithSingleShot(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -58,5 +81,4 @@ func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() (Some, error), n i
 		}
 
 	}()
-	return ch
 }

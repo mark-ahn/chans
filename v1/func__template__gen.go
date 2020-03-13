@@ -11,13 +11,25 @@ import (
 )
 
 func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan Bytes, n)
+	OfFuncBytesWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncBytesWith(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -38,17 +50,28 @@ func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Byt
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan Bytes, n)
+	OfFuncBytesWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncBytesWithSingleShot(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -62,17 +85,28 @@ func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan bool, n)
+	OfFuncBoolWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncBoolWith(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -93,17 +127,28 @@ func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) <-chan bool {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan bool, n)
+	OfFuncBoolWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncBoolWithSingleShot(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -117,17 +162,28 @@ func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) <-
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan byte, n)
+	OfFuncByteWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncByteWith(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -148,17 +204,28 @@ func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) <-chan byte {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan byte, n)
+	OfFuncByteWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncByteWithSingleShot(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -172,17 +239,28 @@ func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) <-
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan complex128, n)
+	OfFuncComplex128With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncComplex128With(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -203,17 +281,28 @@ func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan complex128, n)
+	OfFuncComplex128WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncComplex128WithSingleShot(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -227,17 +316,28 @@ func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan complex64, n)
+	OfFuncComplex64With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncComplex64With(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -258,17 +358,28 @@ func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan complex64, n)
+	OfFuncComplex64WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncComplex64WithSingleShot(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -282,17 +393,28 @@ func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error),
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan error {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan error, n)
+	OfFuncErrorWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncErrorWith(ctx context.Context, f func() (error, error), ch chan<- error, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -313,17 +435,28 @@ func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan err
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) <-chan error {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan error, n)
+	OfFuncErrorWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncErrorWithSingleShot(ctx context.Context, f func() (error, error), ch chan<- error, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -337,17 +470,28 @@ func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan float32, n)
+	OfFuncFloat32With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncFloat32With(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -368,17 +512,28 @@ func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan float32, n)
+	OfFuncFloat32WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncFloat32WithSingleShot(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -392,17 +547,28 @@ func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n i
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan float64, n)
+	OfFuncFloat64With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncFloat64With(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -423,17 +589,28 @@ func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan float64, n)
+	OfFuncFloat64WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncFloat64WithSingleShot(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -447,17 +624,28 @@ func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n i
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int, n)
+	OfFuncIntWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncIntWith(ctx context.Context, f func() (int, error), ch chan<- int, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -478,17 +666,28 @@ func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) <-chan int {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int, n)
+	OfFuncIntWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncIntWithSingleShot(ctx context.Context, f func() (int, error), ch chan<- int, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -502,17 +701,28 @@ func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) <-ch
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int16, n)
+	OfFuncInt16With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt16With(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -533,17 +743,28 @@ func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int16, n)
+	OfFuncInt16WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt16WithSingleShot(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -557,17 +778,28 @@ func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int32, n)
+	OfFuncInt32With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt32With(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -588,17 +820,28 @@ func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int32, n)
+	OfFuncInt32WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt32WithSingleShot(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -612,17 +855,28 @@ func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int64, n)
+	OfFuncInt64With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt64With(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -643,17 +897,28 @@ func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int64, n)
+	OfFuncInt64WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt64WithSingleShot(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -667,17 +932,28 @@ func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int8, n)
+	OfFuncInt8With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt8With(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -698,17 +974,28 @@ func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan int8, n)
+	OfFuncInt8WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInt8WithSingleShot(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -722,17 +1009,28 @@ func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) <-
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan rune, n)
+	OfFuncRuneWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncRuneWith(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -753,17 +1051,28 @@ func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) <-chan rune {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan rune, n)
+	OfFuncRuneWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncRuneWithSingleShot(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -777,17 +1086,28 @@ func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) <-
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan string {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan string, n)
+	OfFuncStringWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncStringWith(ctx context.Context, f func() (string, error), ch chan<- string, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -808,17 +1128,28 @@ func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan s
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int) <-chan string {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan string, n)
+	OfFuncStringWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncStringWithSingleShot(ctx context.Context, f func() (string, error), ch chan<- string, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -832,17 +1163,28 @@ func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint, n)
+	OfFuncUintWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUintWith(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -863,17 +1205,28 @@ func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) <-chan uint {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint, n)
+	OfFuncUintWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUintWithSingleShot(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -887,17 +1240,28 @@ func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) <-
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint16, n)
+	OfFuncUint16With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint16With(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -918,17 +1282,28 @@ func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan u
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint16, n)
+	OfFuncUint16WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint16WithSingleShot(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -942,17 +1317,28 @@ func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint32, n)
+	OfFuncUint32With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint32With(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -973,17 +1359,28 @@ func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan u
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint32, n)
+	OfFuncUint32WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint32WithSingleShot(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -997,17 +1394,28 @@ func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint64, n)
+	OfFuncUint64With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint64With(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -1028,17 +1436,28 @@ func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan u
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint64, n)
+	OfFuncUint64WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint64WithSingleShot(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -1052,17 +1471,28 @@ func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint8, n)
+	OfFuncUint8With(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint8With(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -1083,17 +1513,28 @@ func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uin
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uint8, n)
+	OfFuncUint8WithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUint8WithSingleShot(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -1107,17 +1548,28 @@ func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) 
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uintptr, n)
+	OfFuncUintptrWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUintptrWith(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -1138,17 +1590,28 @@ func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan uintptr, n)
+	OfFuncUintptrWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncUintptrWithSingleShot(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -1162,17 +1625,28 @@ func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n i
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan interface{}, n)
+	OfFuncInterfaceWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInterfaceWith(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -1193,17 +1667,28 @@ func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) 
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan interface{}, n)
+	OfFuncInterfaceWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncInterfaceWithSingleShot(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -1217,17 +1702,28 @@ func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error
 		}
 
 	}()
-	return ch
 }
 
 func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan struct{}, n)
+	OfFuncStructWith(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncStructWith(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 	loop:
 		for {
@@ -1248,17 +1744,28 @@ func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan
 
 		}
 	}()
-	return ch
 }
 
 func OfFuncStructSingleShot(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
-	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ch := make(chan struct{}, n)
+	OfFuncStructWithSingleShot(ctx, f, ch, func() {
+		close(ch)
+	})
+	return ch
+}
+
+func OfFuncStructWithSingleShot(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) {
+	cnt := syncs.ThreadCounterFrom(ctx)
+
 	cnt.Add(1)
 	go func() {
 		defer cnt.Done()
-		defer close(ch)
+		defer func() {
+			if release != nil {
+				release()
+			}
+		}()
 
 		t, err := f()
 		if err != nil {
@@ -1272,5 +1779,4 @@ func OfFuncStructSingleShot(ctx context.Context, f func() (struct{}, error), n i
 		}
 
 	}()
-	return ch
 }
