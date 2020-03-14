@@ -7,6 +7,7 @@ package chans
 import (
 	"context"
 
+	"github.com/mark-ahn/chans/v1/core"
 	"github.com/mark-ahn/syncs"
 )
 
@@ -35,7 +36,7 @@ func OfFuncBytesWith(ctx context.Context, f func() (Bytes, error), ch chan<- Byt
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -112,7 +113,7 @@ func OfFuncBoolWith(ctx context.Context, f func() (bool, error), ch chan<- bool,
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -189,7 +190,7 @@ func OfFuncByteWith(ctx context.Context, f func() (byte, error), ch chan<- byte,
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -266,7 +267,7 @@ func OfFuncComplex128With(ctx context.Context, f func() (complex128, error), ch 
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -343,7 +344,7 @@ func OfFuncComplex64With(ctx context.Context, f func() (complex64, error), ch ch
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -420,7 +421,7 @@ func OfFuncErrorWith(ctx context.Context, f func() (error, error), ch chan<- err
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -497,7 +498,7 @@ func OfFuncFloat32With(ctx context.Context, f func() (float32, error), ch chan<-
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -574,7 +575,7 @@ func OfFuncFloat64With(ctx context.Context, f func() (float64, error), ch chan<-
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -651,7 +652,7 @@ func OfFuncIntWith(ctx context.Context, f func() (int, error), ch chan<- int, re
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -728,7 +729,7 @@ func OfFuncInt16With(ctx context.Context, f func() (int16, error), ch chan<- int
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -805,7 +806,7 @@ func OfFuncInt32With(ctx context.Context, f func() (int32, error), ch chan<- int
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -882,7 +883,7 @@ func OfFuncInt64With(ctx context.Context, f func() (int64, error), ch chan<- int
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -959,7 +960,7 @@ func OfFuncInt8With(ctx context.Context, f func() (int8, error), ch chan<- int8,
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1036,7 +1037,7 @@ func OfFuncRuneWith(ctx context.Context, f func() (rune, error), ch chan<- rune,
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1113,7 +1114,7 @@ func OfFuncStringWith(ctx context.Context, f func() (string, error), ch chan<- s
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1190,7 +1191,7 @@ func OfFuncUintWith(ctx context.Context, f func() (uint, error), ch chan<- uint,
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1267,7 +1268,7 @@ func OfFuncUint16With(ctx context.Context, f func() (uint16, error), ch chan<- u
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1344,7 +1345,7 @@ func OfFuncUint32With(ctx context.Context, f func() (uint32, error), ch chan<- u
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1421,7 +1422,7 @@ func OfFuncUint64With(ctx context.Context, f func() (uint64, error), ch chan<- u
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1498,7 +1499,7 @@ func OfFuncUint8With(ctx context.Context, f func() (uint8, error), ch chan<- uin
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1575,7 +1576,7 @@ func OfFuncUintptrWith(ctx context.Context, f func() (uintptr, error), ch chan<-
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1652,7 +1653,7 @@ func OfFuncInterfaceWith(ctx context.Context, f func() (interface{}, error), ch 
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:
@@ -1729,7 +1730,7 @@ func OfFuncStructWith(ctx context.Context, f func() (struct{}, error), ch chan<-
 		for {
 			t, err := f()
 			switch err {
-			case ErrStopIter:
+			case core.ErrStopIter:
 				break loop
 			case nil:
 			default:

@@ -27,6 +27,7 @@ const (
 
 var ErrStopMap = fmt.Errorf("Stop Map")
 var ErrSkipMap = fmt.Errorf("Skip Map")
+var ErrStopIter = ErrStopMap
 
 type Chainable interface {
 	Context() context.Context

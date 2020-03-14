@@ -6,7 +6,7 @@ import (
 
 var ErrSkipMap = core.ErrSkipMap
 var ErrStopMap = core.ErrStopMap
-var ErrStopIter = core.ErrStopMap
+var ErrStopIter = core.ErrStopIter
 
 type CaseControl = core.CaseControl
 
