@@ -10,7 +10,14 @@ import (
 func MapSomeToOther(ctx context.Context, recv <-chan Some, send chan<- Other, mapF func(Some, bool) (Other, error), onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -60,7 +67,14 @@ func MapSomeToOther(ctx context.Context, recv <-chan Some, send chan<- Other, ma
 func CaseSendSomeOrOther(ctx context.Context, ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan Other, elseF func(v Other, ok bool)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 

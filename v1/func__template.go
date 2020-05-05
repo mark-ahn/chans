@@ -2,24 +2,32 @@ package chans
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/mark-ahn/chans/v1/core"
 	"github.com/mark-ahn/syncs"
 )
 
-func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) <-chan Some {
+func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) (<-chan Some, error) {
 
 	ch := make(chan Some, n)
-	_Prefix_FuncSomeWith(ctx, f, ch, func() {
+	err := _Prefix_FuncSomeWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) {
+func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -47,21 +55,29 @@ func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<-
 
 		}
 	}()
+	return nil
 }
 
-func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() (Some, error), n int) <-chan Some {
+func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() (Some, error), n int) (<-chan Some, error) {
 
 	ch := make(chan Some, n)
-	_Prefix_FuncSomeWithSingleShot(ctx, f, ch, func() {
+	err := _Prefix_FuncSomeWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func _Prefix_FuncSomeWithSingleShot(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) {
+func _Prefix_FuncSomeWithSingleShot(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -82,4 +98,5 @@ func _Prefix_FuncSomeWithSingleShot(ctx context.Context, f func() (Some, error),
 		}
 
 	}()
+	return nil
 }

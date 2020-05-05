@@ -12,7 +12,14 @@ import (
 func CaseRecv(ctx context.Context, ch interface{}, f func(v interface{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -61,7 +68,11 @@ func CaseRecv(ctx context.Context, ch interface{}, f func(v interface{}, ok bool
 func CaseSend(ctx context.Context, ch interface{}, v interface{}, f func(v interface{}, ok bool, sent core.CaseResult), elseCh interface{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		f(nil, false, core.CASE_CANCEL)
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -104,7 +115,11 @@ func Connect(ctx context.Context, recv interface{}, send interface{}) error {
 		return fmt.Errorf("type is not matched")
 	}
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		return fmt.Errorf("chans-connect: cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 

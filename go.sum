@@ -5,3 +5,5 @@ github.com/mark-ahn/hexa v0.0.0-20190530133308-5fc44b8f4ab2 h1:+AgmXvwYaI1CdLWeB
 github.com/mark-ahn/hexa v0.0.0-20190530133308-5fc44b8f4ab2/go.mod h1:ew26qPqaOjJ9f/3sdgU0UEydTrFngVR5ahJFOFKkPWI=
 github.com/mark-ahn/syncs v0.0.0-20200313110653-eef471971b87 h1:qSEmlwYhOZu8RtK3kN+7ZpPmEQjeVql9G/OveUVGN4s=
 github.com/mark-ahn/syncs v0.0.0-20200313110653-eef471971b87/go.mod h1:rY4QWbGbyldo7+hyhEL/dq+VWzbodnCMlrq4YnBFzKI=
+github.com/mark-ahn/syncs v0.0.0-20200505055211-80d17ca64d99 h1:VjqsOqj/dlNsoMxIiZ4FgnhEqJtxdteBjq488VuS68k=
+github.com/mark-ahn/syncs v0.0.0-20200505055211-80d17ca64d99/go.mod h1:rY4QWbGbyldo7+hyhEL/dq+VWzbodnCMlrq4YnBFzKI=

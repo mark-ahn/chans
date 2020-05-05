@@ -6,24 +6,32 @@ package chans
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/mark-ahn/chans/v1/core"
 	"github.com/mark-ahn/syncs"
 )
 
-func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
+func OfFuncBytes(ctx context.Context, f func() (Bytes, error), n int) (<-chan Bytes, error) {
 
 	ch := make(chan Bytes, n)
-	OfFuncBytesWith(ctx, f, ch, func() {
+	err := OfFuncBytesWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncBytesWith(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) {
+func OfFuncBytesWith(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -51,21 +59,29 @@ func OfFuncBytesWith(ctx context.Context, f func() (Bytes, error), ch chan<- Byt
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) <-chan Bytes {
+func OfFuncBytesSingleShot(ctx context.Context, f func() (Bytes, error), n int) (<-chan Bytes, error) {
 
 	ch := make(chan Bytes, n)
-	OfFuncBytesWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncBytesWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncBytesWithSingleShot(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) {
+func OfFuncBytesWithSingleShot(ctx context.Context, f func() (Bytes, error), ch chan<- Bytes, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -86,21 +102,29 @@ func OfFuncBytesWithSingleShot(ctx context.Context, f func() (Bytes, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncBool(ctx context.Context, f func() (bool, error), n int) <-chan bool {
+func OfFuncBool(ctx context.Context, f func() (bool, error), n int) (<-chan bool, error) {
 
 	ch := make(chan bool, n)
-	OfFuncBoolWith(ctx, f, ch, func() {
+	err := OfFuncBoolWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncBoolWith(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) {
+func OfFuncBoolWith(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -128,21 +152,29 @@ func OfFuncBoolWith(ctx context.Context, f func() (bool, error), ch chan<- bool,
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) <-chan bool {
+func OfFuncBoolSingleShot(ctx context.Context, f func() (bool, error), n int) (<-chan bool, error) {
 
 	ch := make(chan bool, n)
-	OfFuncBoolWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncBoolWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncBoolWithSingleShot(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) {
+func OfFuncBoolWithSingleShot(ctx context.Context, f func() (bool, error), ch chan<- bool, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -163,21 +195,29 @@ func OfFuncBoolWithSingleShot(ctx context.Context, f func() (bool, error), ch ch
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncByte(ctx context.Context, f func() (byte, error), n int) <-chan byte {
+func OfFuncByte(ctx context.Context, f func() (byte, error), n int) (<-chan byte, error) {
 
 	ch := make(chan byte, n)
-	OfFuncByteWith(ctx, f, ch, func() {
+	err := OfFuncByteWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncByteWith(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) {
+func OfFuncByteWith(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -205,21 +245,29 @@ func OfFuncByteWith(ctx context.Context, f func() (byte, error), ch chan<- byte,
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) <-chan byte {
+func OfFuncByteSingleShot(ctx context.Context, f func() (byte, error), n int) (<-chan byte, error) {
 
 	ch := make(chan byte, n)
-	OfFuncByteWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncByteWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncByteWithSingleShot(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) {
+func OfFuncByteWithSingleShot(ctx context.Context, f func() (byte, error), ch chan<- byte, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -240,21 +288,29 @@ func OfFuncByteWithSingleShot(ctx context.Context, f func() (byte, error), ch ch
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
+func OfFuncComplex128(ctx context.Context, f func() (complex128, error), n int) (<-chan complex128, error) {
 
 	ch := make(chan complex128, n)
-	OfFuncComplex128With(ctx, f, ch, func() {
+	err := OfFuncComplex128With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncComplex128With(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) {
+func OfFuncComplex128With(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -282,21 +338,29 @@ func OfFuncComplex128With(ctx context.Context, f func() (complex128, error), ch 
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error), n int) <-chan complex128 {
+func OfFuncComplex128SingleShot(ctx context.Context, f func() (complex128, error), n int) (<-chan complex128, error) {
 
 	ch := make(chan complex128, n)
-	OfFuncComplex128WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncComplex128WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncComplex128WithSingleShot(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) {
+func OfFuncComplex128WithSingleShot(ctx context.Context, f func() (complex128, error), ch chan<- complex128, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -317,21 +381,29 @@ func OfFuncComplex128WithSingleShot(ctx context.Context, f func() (complex128, e
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
+func OfFuncComplex64(ctx context.Context, f func() (complex64, error), n int) (<-chan complex64, error) {
 
 	ch := make(chan complex64, n)
-	OfFuncComplex64With(ctx, f, ch, func() {
+	err := OfFuncComplex64With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncComplex64With(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) {
+func OfFuncComplex64With(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -359,21 +431,29 @@ func OfFuncComplex64With(ctx context.Context, f func() (complex64, error), ch ch
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error), n int) <-chan complex64 {
+func OfFuncComplex64SingleShot(ctx context.Context, f func() (complex64, error), n int) (<-chan complex64, error) {
 
 	ch := make(chan complex64, n)
-	OfFuncComplex64WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncComplex64WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncComplex64WithSingleShot(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) {
+func OfFuncComplex64WithSingleShot(ctx context.Context, f func() (complex64, error), ch chan<- complex64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -394,21 +474,29 @@ func OfFuncComplex64WithSingleShot(ctx context.Context, f func() (complex64, err
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncError(ctx context.Context, f func() (error, error), n int) <-chan error {
+func OfFuncError(ctx context.Context, f func() (error, error), n int) (<-chan error, error) {
 
 	ch := make(chan error, n)
-	OfFuncErrorWith(ctx, f, ch, func() {
+	err := OfFuncErrorWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncErrorWith(ctx context.Context, f func() (error, error), ch chan<- error, release func()) {
+func OfFuncErrorWith(ctx context.Context, f func() (error, error), ch chan<- error, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -436,21 +524,29 @@ func OfFuncErrorWith(ctx context.Context, f func() (error, error), ch chan<- err
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) <-chan error {
+func OfFuncErrorSingleShot(ctx context.Context, f func() (error, error), n int) (<-chan error, error) {
 
 	ch := make(chan error, n)
-	OfFuncErrorWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncErrorWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncErrorWithSingleShot(ctx context.Context, f func() (error, error), ch chan<- error, release func()) {
+func OfFuncErrorWithSingleShot(ctx context.Context, f func() (error, error), ch chan<- error, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -471,21 +567,29 @@ func OfFuncErrorWithSingleShot(ctx context.Context, f func() (error, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
+func OfFuncFloat32(ctx context.Context, f func() (float32, error), n int) (<-chan float32, error) {
 
 	ch := make(chan float32, n)
-	OfFuncFloat32With(ctx, f, ch, func() {
+	err := OfFuncFloat32With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncFloat32With(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) {
+func OfFuncFloat32With(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -513,21 +617,29 @@ func OfFuncFloat32With(ctx context.Context, f func() (float32, error), ch chan<-
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n int) <-chan float32 {
+func OfFuncFloat32SingleShot(ctx context.Context, f func() (float32, error), n int) (<-chan float32, error) {
 
 	ch := make(chan float32, n)
-	OfFuncFloat32WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncFloat32WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncFloat32WithSingleShot(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) {
+func OfFuncFloat32WithSingleShot(ctx context.Context, f func() (float32, error), ch chan<- float32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -548,21 +660,29 @@ func OfFuncFloat32WithSingleShot(ctx context.Context, f func() (float32, error),
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
+func OfFuncFloat64(ctx context.Context, f func() (float64, error), n int) (<-chan float64, error) {
 
 	ch := make(chan float64, n)
-	OfFuncFloat64With(ctx, f, ch, func() {
+	err := OfFuncFloat64With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncFloat64With(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) {
+func OfFuncFloat64With(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -590,21 +710,29 @@ func OfFuncFloat64With(ctx context.Context, f func() (float64, error), ch chan<-
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n int) <-chan float64 {
+func OfFuncFloat64SingleShot(ctx context.Context, f func() (float64, error), n int) (<-chan float64, error) {
 
 	ch := make(chan float64, n)
-	OfFuncFloat64WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncFloat64WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncFloat64WithSingleShot(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) {
+func OfFuncFloat64WithSingleShot(ctx context.Context, f func() (float64, error), ch chan<- float64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -625,21 +753,29 @@ func OfFuncFloat64WithSingleShot(ctx context.Context, f func() (float64, error),
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInt(ctx context.Context, f func() (int, error), n int) <-chan int {
+func OfFuncInt(ctx context.Context, f func() (int, error), n int) (<-chan int, error) {
 
 	ch := make(chan int, n)
-	OfFuncIntWith(ctx, f, ch, func() {
+	err := OfFuncIntWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncIntWith(ctx context.Context, f func() (int, error), ch chan<- int, release func()) {
+func OfFuncIntWith(ctx context.Context, f func() (int, error), ch chan<- int, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -667,21 +803,29 @@ func OfFuncIntWith(ctx context.Context, f func() (int, error), ch chan<- int, re
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) <-chan int {
+func OfFuncIntSingleShot(ctx context.Context, f func() (int, error), n int) (<-chan int, error) {
 
 	ch := make(chan int, n)
-	OfFuncIntWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncIntWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncIntWithSingleShot(ctx context.Context, f func() (int, error), ch chan<- int, release func()) {
+func OfFuncIntWithSingleShot(ctx context.Context, f func() (int, error), ch chan<- int, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -702,21 +846,29 @@ func OfFuncIntWithSingleShot(ctx context.Context, f func() (int, error), ch chan
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
+func OfFuncInt16(ctx context.Context, f func() (int16, error), n int) (<-chan int16, error) {
 
 	ch := make(chan int16, n)
-	OfFuncInt16With(ctx, f, ch, func() {
+	err := OfFuncInt16With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt16With(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) {
+func OfFuncInt16With(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -744,21 +896,29 @@ func OfFuncInt16With(ctx context.Context, f func() (int16, error), ch chan<- int
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) <-chan int16 {
+func OfFuncInt16SingleShot(ctx context.Context, f func() (int16, error), n int) (<-chan int16, error) {
 
 	ch := make(chan int16, n)
-	OfFuncInt16WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncInt16WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt16WithSingleShot(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) {
+func OfFuncInt16WithSingleShot(ctx context.Context, f func() (int16, error), ch chan<- int16, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -779,21 +939,29 @@ func OfFuncInt16WithSingleShot(ctx context.Context, f func() (int16, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
+func OfFuncInt32(ctx context.Context, f func() (int32, error), n int) (<-chan int32, error) {
 
 	ch := make(chan int32, n)
-	OfFuncInt32With(ctx, f, ch, func() {
+	err := OfFuncInt32With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt32With(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) {
+func OfFuncInt32With(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -821,21 +989,29 @@ func OfFuncInt32With(ctx context.Context, f func() (int32, error), ch chan<- int
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) <-chan int32 {
+func OfFuncInt32SingleShot(ctx context.Context, f func() (int32, error), n int) (<-chan int32, error) {
 
 	ch := make(chan int32, n)
-	OfFuncInt32WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncInt32WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt32WithSingleShot(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) {
+func OfFuncInt32WithSingleShot(ctx context.Context, f func() (int32, error), ch chan<- int32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -856,21 +1032,29 @@ func OfFuncInt32WithSingleShot(ctx context.Context, f func() (int32, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
+func OfFuncInt64(ctx context.Context, f func() (int64, error), n int) (<-chan int64, error) {
 
 	ch := make(chan int64, n)
-	OfFuncInt64With(ctx, f, ch, func() {
+	err := OfFuncInt64With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt64With(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) {
+func OfFuncInt64With(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -898,21 +1082,29 @@ func OfFuncInt64With(ctx context.Context, f func() (int64, error), ch chan<- int
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) <-chan int64 {
+func OfFuncInt64SingleShot(ctx context.Context, f func() (int64, error), n int) (<-chan int64, error) {
 
 	ch := make(chan int64, n)
-	OfFuncInt64WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncInt64WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt64WithSingleShot(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) {
+func OfFuncInt64WithSingleShot(ctx context.Context, f func() (int64, error), ch chan<- int64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -933,21 +1125,29 @@ func OfFuncInt64WithSingleShot(ctx context.Context, f func() (int64, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
+func OfFuncInt8(ctx context.Context, f func() (int8, error), n int) (<-chan int8, error) {
 
 	ch := make(chan int8, n)
-	OfFuncInt8With(ctx, f, ch, func() {
+	err := OfFuncInt8With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt8With(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) {
+func OfFuncInt8With(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -975,21 +1175,29 @@ func OfFuncInt8With(ctx context.Context, f func() (int8, error), ch chan<- int8,
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) <-chan int8 {
+func OfFuncInt8SingleShot(ctx context.Context, f func() (int8, error), n int) (<-chan int8, error) {
 
 	ch := make(chan int8, n)
-	OfFuncInt8WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncInt8WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInt8WithSingleShot(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) {
+func OfFuncInt8WithSingleShot(ctx context.Context, f func() (int8, error), ch chan<- int8, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1010,21 +1218,29 @@ func OfFuncInt8WithSingleShot(ctx context.Context, f func() (int8, error), ch ch
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncRune(ctx context.Context, f func() (rune, error), n int) <-chan rune {
+func OfFuncRune(ctx context.Context, f func() (rune, error), n int) (<-chan rune, error) {
 
 	ch := make(chan rune, n)
-	OfFuncRuneWith(ctx, f, ch, func() {
+	err := OfFuncRuneWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncRuneWith(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) {
+func OfFuncRuneWith(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1052,21 +1268,29 @@ func OfFuncRuneWith(ctx context.Context, f func() (rune, error), ch chan<- rune,
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) <-chan rune {
+func OfFuncRuneSingleShot(ctx context.Context, f func() (rune, error), n int) (<-chan rune, error) {
 
 	ch := make(chan rune, n)
-	OfFuncRuneWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncRuneWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncRuneWithSingleShot(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) {
+func OfFuncRuneWithSingleShot(ctx context.Context, f func() (rune, error), ch chan<- rune, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1087,21 +1311,29 @@ func OfFuncRuneWithSingleShot(ctx context.Context, f func() (rune, error), ch ch
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncString(ctx context.Context, f func() (string, error), n int) <-chan string {
+func OfFuncString(ctx context.Context, f func() (string, error), n int) (<-chan string, error) {
 
 	ch := make(chan string, n)
-	OfFuncStringWith(ctx, f, ch, func() {
+	err := OfFuncStringWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncStringWith(ctx context.Context, f func() (string, error), ch chan<- string, release func()) {
+func OfFuncStringWith(ctx context.Context, f func() (string, error), ch chan<- string, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1129,21 +1361,29 @@ func OfFuncStringWith(ctx context.Context, f func() (string, error), ch chan<- s
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int) <-chan string {
+func OfFuncStringSingleShot(ctx context.Context, f func() (string, error), n int) (<-chan string, error) {
 
 	ch := make(chan string, n)
-	OfFuncStringWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncStringWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncStringWithSingleShot(ctx context.Context, f func() (string, error), ch chan<- string, release func()) {
+func OfFuncStringWithSingleShot(ctx context.Context, f func() (string, error), ch chan<- string, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1164,21 +1404,29 @@ func OfFuncStringWithSingleShot(ctx context.Context, f func() (string, error), c
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUint(ctx context.Context, f func() (uint, error), n int) <-chan uint {
+func OfFuncUint(ctx context.Context, f func() (uint, error), n int) (<-chan uint, error) {
 
 	ch := make(chan uint, n)
-	OfFuncUintWith(ctx, f, ch, func() {
+	err := OfFuncUintWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUintWith(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) {
+func OfFuncUintWith(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1206,21 +1454,29 @@ func OfFuncUintWith(ctx context.Context, f func() (uint, error), ch chan<- uint,
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) <-chan uint {
+func OfFuncUintSingleShot(ctx context.Context, f func() (uint, error), n int) (<-chan uint, error) {
 
 	ch := make(chan uint, n)
-	OfFuncUintWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUintWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUintWithSingleShot(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) {
+func OfFuncUintWithSingleShot(ctx context.Context, f func() (uint, error), ch chan<- uint, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1241,21 +1497,29 @@ func OfFuncUintWithSingleShot(ctx context.Context, f func() (uint, error), ch ch
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
+func OfFuncUint16(ctx context.Context, f func() (uint16, error), n int) (<-chan uint16, error) {
 
 	ch := make(chan uint16, n)
-	OfFuncUint16With(ctx, f, ch, func() {
+	err := OfFuncUint16With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint16With(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) {
+func OfFuncUint16With(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1283,21 +1547,29 @@ func OfFuncUint16With(ctx context.Context, f func() (uint16, error), ch chan<- u
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int) <-chan uint16 {
+func OfFuncUint16SingleShot(ctx context.Context, f func() (uint16, error), n int) (<-chan uint16, error) {
 
 	ch := make(chan uint16, n)
-	OfFuncUint16WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUint16WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint16WithSingleShot(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) {
+func OfFuncUint16WithSingleShot(ctx context.Context, f func() (uint16, error), ch chan<- uint16, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1318,21 +1590,29 @@ func OfFuncUint16WithSingleShot(ctx context.Context, f func() (uint16, error), c
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
+func OfFuncUint32(ctx context.Context, f func() (uint32, error), n int) (<-chan uint32, error) {
 
 	ch := make(chan uint32, n)
-	OfFuncUint32With(ctx, f, ch, func() {
+	err := OfFuncUint32With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint32With(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) {
+func OfFuncUint32With(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1360,21 +1640,29 @@ func OfFuncUint32With(ctx context.Context, f func() (uint32, error), ch chan<- u
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int) <-chan uint32 {
+func OfFuncUint32SingleShot(ctx context.Context, f func() (uint32, error), n int) (<-chan uint32, error) {
 
 	ch := make(chan uint32, n)
-	OfFuncUint32WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUint32WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint32WithSingleShot(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) {
+func OfFuncUint32WithSingleShot(ctx context.Context, f func() (uint32, error), ch chan<- uint32, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1395,21 +1683,29 @@ func OfFuncUint32WithSingleShot(ctx context.Context, f func() (uint32, error), c
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
+func OfFuncUint64(ctx context.Context, f func() (uint64, error), n int) (<-chan uint64, error) {
 
 	ch := make(chan uint64, n)
-	OfFuncUint64With(ctx, f, ch, func() {
+	err := OfFuncUint64With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint64With(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) {
+func OfFuncUint64With(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1437,21 +1733,29 @@ func OfFuncUint64With(ctx context.Context, f func() (uint64, error), ch chan<- u
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int) <-chan uint64 {
+func OfFuncUint64SingleShot(ctx context.Context, f func() (uint64, error), n int) (<-chan uint64, error) {
 
 	ch := make(chan uint64, n)
-	OfFuncUint64WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUint64WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint64WithSingleShot(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) {
+func OfFuncUint64WithSingleShot(ctx context.Context, f func() (uint64, error), ch chan<- uint64, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1472,21 +1776,29 @@ func OfFuncUint64WithSingleShot(ctx context.Context, f func() (uint64, error), c
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
+func OfFuncUint8(ctx context.Context, f func() (uint8, error), n int) (<-chan uint8, error) {
 
 	ch := make(chan uint8, n)
-	OfFuncUint8With(ctx, f, ch, func() {
+	err := OfFuncUint8With(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint8With(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) {
+func OfFuncUint8With(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1514,21 +1826,29 @@ func OfFuncUint8With(ctx context.Context, f func() (uint8, error), ch chan<- uin
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) <-chan uint8 {
+func OfFuncUint8SingleShot(ctx context.Context, f func() (uint8, error), n int) (<-chan uint8, error) {
 
 	ch := make(chan uint8, n)
-	OfFuncUint8WithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUint8WithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUint8WithSingleShot(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) {
+func OfFuncUint8WithSingleShot(ctx context.Context, f func() (uint8, error), ch chan<- uint8, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1549,21 +1869,29 @@ func OfFuncUint8WithSingleShot(ctx context.Context, f func() (uint8, error), ch 
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
+func OfFuncUintptr(ctx context.Context, f func() (uintptr, error), n int) (<-chan uintptr, error) {
 
 	ch := make(chan uintptr, n)
-	OfFuncUintptrWith(ctx, f, ch, func() {
+	err := OfFuncUintptrWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUintptrWith(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) {
+func OfFuncUintptrWith(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1591,21 +1919,29 @@ func OfFuncUintptrWith(ctx context.Context, f func() (uintptr, error), ch chan<-
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n int) <-chan uintptr {
+func OfFuncUintptrSingleShot(ctx context.Context, f func() (uintptr, error), n int) (<-chan uintptr, error) {
 
 	ch := make(chan uintptr, n)
-	OfFuncUintptrWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncUintptrWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncUintptrWithSingleShot(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) {
+func OfFuncUintptrWithSingleShot(ctx context.Context, f func() (uintptr, error), ch chan<- uintptr, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1626,21 +1962,29 @@ func OfFuncUintptrWithSingleShot(ctx context.Context, f func() (uintptr, error),
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
+func OfFuncInterface(ctx context.Context, f func() (interface{}, error), n int) (<-chan interface{}, error) {
 
 	ch := make(chan interface{}, n)
-	OfFuncInterfaceWith(ctx, f, ch, func() {
+	err := OfFuncInterfaceWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInterfaceWith(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) {
+func OfFuncInterfaceWith(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1668,21 +2012,29 @@ func OfFuncInterfaceWith(ctx context.Context, f func() (interface{}, error), ch 
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error), n int) <-chan interface{} {
+func OfFuncInterfaceSingleShot(ctx context.Context, f func() (interface{}, error), n int) (<-chan interface{}, error) {
 
 	ch := make(chan interface{}, n)
-	OfFuncInterfaceWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncInterfaceWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncInterfaceWithSingleShot(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) {
+func OfFuncInterfaceWithSingleShot(ctx context.Context, f func() (interface{}, error), ch chan<- interface{}, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1703,21 +2055,29 @@ func OfFuncInterfaceWithSingleShot(ctx context.Context, f func() (interface{}, e
 		}
 
 	}()
+	return nil
 }
 
-func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
+func OfFuncStruct(ctx context.Context, f func() (struct{}, error), n int) (<-chan struct{}, error) {
 
 	ch := make(chan struct{}, n)
-	OfFuncStructWith(ctx, f, ch, func() {
+	err := OfFuncStructWith(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncStructWith(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) {
+func OfFuncStructWith(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1745,21 +2105,29 @@ func OfFuncStructWith(ctx context.Context, f func() (struct{}, error), ch chan<-
 
 		}
 	}()
+	return nil
 }
 
-func OfFuncStructSingleShot(ctx context.Context, f func() (struct{}, error), n int) <-chan struct{} {
+func OfFuncStructSingleShot(ctx context.Context, f func() (struct{}, error), n int) (<-chan struct{}, error) {
 
 	ch := make(chan struct{}, n)
-	OfFuncStructWithSingleShot(ctx, f, ch, func() {
+	err := OfFuncStructWithSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
-	return ch
+	return ch, err
 }
 
-func OfFuncStructWithSingleShot(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) {
+func OfFuncStructWithSingleShot(ctx context.Context, f func() (struct{}, error), ch chan<- struct{}, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if release != nil {
+			release()
+		}
+		return fmt.Errorf("cannot start thread with context which has done")
+	}
+
 	go func() {
 		defer cnt.Done()
 		defer func() {
@@ -1780,4 +2148,5 @@ func OfFuncStructWithSingleShot(ctx context.Context, f func() (struct{}, error),
 		}
 
 	}()
+	return nil
 }

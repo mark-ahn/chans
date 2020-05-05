@@ -10,7 +10,14 @@ import (
 func CaseRecvSome(ctx context.Context, ch <-chan Some, f func(v Some, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -42,7 +49,14 @@ func CaseRecvSome(ctx context.Context, ch <-chan Some, f func(v Some, ok bool) c
 func CaseSendSome(ctx context.Context, ch chan<- Some, v Some, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -68,7 +82,14 @@ func CaseSendSome(ctx context.Context, ch chan<- Some, v Some, onEvent func(sent
 func ConnectSome(ctx context.Context, recv <-chan Some, send chan<- Some, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 

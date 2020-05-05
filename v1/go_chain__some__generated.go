@@ -14,7 +14,14 @@ import (
 func CaseRecvBytes(ctx context.Context, ch <-chan Bytes, f func(v Bytes, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -46,7 +53,14 @@ func CaseRecvBytes(ctx context.Context, ch <-chan Bytes, f func(v Bytes, ok bool
 func CaseSendBytes(ctx context.Context, ch chan<- Bytes, v Bytes, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -72,7 +86,14 @@ func CaseSendBytes(ctx context.Context, ch chan<- Bytes, v Bytes, onEvent func(s
 func ConnectBytes(ctx context.Context, recv <-chan Bytes, send chan<- Bytes, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -110,7 +131,14 @@ func ConnectBytes(ctx context.Context, recv <-chan Bytes, send chan<- Bytes, onE
 func CaseRecvBool(ctx context.Context, ch <-chan bool, f func(v bool, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -142,7 +170,14 @@ func CaseRecvBool(ctx context.Context, ch <-chan bool, f func(v bool, ok bool) c
 func CaseSendBool(ctx context.Context, ch chan<- bool, v bool, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -168,7 +203,14 @@ func CaseSendBool(ctx context.Context, ch chan<- bool, v bool, onEvent func(sent
 func ConnectBool(ctx context.Context, recv <-chan bool, send chan<- bool, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -206,7 +248,14 @@ func ConnectBool(ctx context.Context, recv <-chan bool, send chan<- bool, onEven
 func CaseRecvByte(ctx context.Context, ch <-chan byte, f func(v byte, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -238,7 +287,14 @@ func CaseRecvByte(ctx context.Context, ch <-chan byte, f func(v byte, ok bool) c
 func CaseSendByte(ctx context.Context, ch chan<- byte, v byte, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -264,7 +320,14 @@ func CaseSendByte(ctx context.Context, ch chan<- byte, v byte, onEvent func(sent
 func ConnectByte(ctx context.Context, recv <-chan byte, send chan<- byte, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -302,7 +365,14 @@ func ConnectByte(ctx context.Context, recv <-chan byte, send chan<- byte, onEven
 func CaseRecvComplex128(ctx context.Context, ch <-chan complex128, f func(v complex128, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -334,7 +404,14 @@ func CaseRecvComplex128(ctx context.Context, ch <-chan complex128, f func(v comp
 func CaseSendComplex128(ctx context.Context, ch chan<- complex128, v complex128, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -360,7 +437,14 @@ func CaseSendComplex128(ctx context.Context, ch chan<- complex128, v complex128,
 func ConnectComplex128(ctx context.Context, recv <-chan complex128, send chan<- complex128, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -398,7 +482,14 @@ func ConnectComplex128(ctx context.Context, recv <-chan complex128, send chan<- 
 func CaseRecvComplex64(ctx context.Context, ch <-chan complex64, f func(v complex64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -430,7 +521,14 @@ func CaseRecvComplex64(ctx context.Context, ch <-chan complex64, f func(v comple
 func CaseSendComplex64(ctx context.Context, ch chan<- complex64, v complex64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -456,7 +554,14 @@ func CaseSendComplex64(ctx context.Context, ch chan<- complex64, v complex64, on
 func ConnectComplex64(ctx context.Context, recv <-chan complex64, send chan<- complex64, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -494,7 +599,14 @@ func ConnectComplex64(ctx context.Context, recv <-chan complex64, send chan<- co
 func CaseRecvError(ctx context.Context, ch <-chan error, f func(v error, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -526,7 +638,14 @@ func CaseRecvError(ctx context.Context, ch <-chan error, f func(v error, ok bool
 func CaseSendError(ctx context.Context, ch chan<- error, v error, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -552,7 +671,14 @@ func CaseSendError(ctx context.Context, ch chan<- error, v error, onEvent func(s
 func ConnectError(ctx context.Context, recv <-chan error, send chan<- error, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -590,7 +716,14 @@ func ConnectError(ctx context.Context, recv <-chan error, send chan<- error, onE
 func CaseRecvFloat32(ctx context.Context, ch <-chan float32, f func(v float32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -622,7 +755,14 @@ func CaseRecvFloat32(ctx context.Context, ch <-chan float32, f func(v float32, o
 func CaseSendFloat32(ctx context.Context, ch chan<- float32, v float32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -648,7 +788,14 @@ func CaseSendFloat32(ctx context.Context, ch chan<- float32, v float32, onEvent 
 func ConnectFloat32(ctx context.Context, recv <-chan float32, send chan<- float32, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -686,7 +833,14 @@ func ConnectFloat32(ctx context.Context, recv <-chan float32, send chan<- float3
 func CaseRecvFloat64(ctx context.Context, ch <-chan float64, f func(v float64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -718,7 +872,14 @@ func CaseRecvFloat64(ctx context.Context, ch <-chan float64, f func(v float64, o
 func CaseSendFloat64(ctx context.Context, ch chan<- float64, v float64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -744,7 +905,14 @@ func CaseSendFloat64(ctx context.Context, ch chan<- float64, v float64, onEvent 
 func ConnectFloat64(ctx context.Context, recv <-chan float64, send chan<- float64, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -782,7 +950,14 @@ func ConnectFloat64(ctx context.Context, recv <-chan float64, send chan<- float6
 func CaseRecvInt(ctx context.Context, ch <-chan int, f func(v int, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -814,7 +989,14 @@ func CaseRecvInt(ctx context.Context, ch <-chan int, f func(v int, ok bool) core
 func CaseSendInt(ctx context.Context, ch chan<- int, v int, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -840,7 +1022,14 @@ func CaseSendInt(ctx context.Context, ch chan<- int, v int, onEvent func(sent co
 func ConnectInt(ctx context.Context, recv <-chan int, send chan<- int, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -878,7 +1067,14 @@ func ConnectInt(ctx context.Context, recv <-chan int, send chan<- int, onEvent f
 func CaseRecvInt16(ctx context.Context, ch <-chan int16, f func(v int16, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -910,7 +1106,14 @@ func CaseRecvInt16(ctx context.Context, ch <-chan int16, f func(v int16, ok bool
 func CaseSendInt16(ctx context.Context, ch chan<- int16, v int16, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -936,7 +1139,14 @@ func CaseSendInt16(ctx context.Context, ch chan<- int16, v int16, onEvent func(s
 func ConnectInt16(ctx context.Context, recv <-chan int16, send chan<- int16, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -974,7 +1184,14 @@ func ConnectInt16(ctx context.Context, recv <-chan int16, send chan<- int16, onE
 func CaseRecvInt32(ctx context.Context, ch <-chan int32, f func(v int32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1006,7 +1223,14 @@ func CaseRecvInt32(ctx context.Context, ch <-chan int32, f func(v int32, ok bool
 func CaseSendInt32(ctx context.Context, ch chan<- int32, v int32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1032,7 +1256,14 @@ func CaseSendInt32(ctx context.Context, ch chan<- int32, v int32, onEvent func(s
 func ConnectInt32(ctx context.Context, recv <-chan int32, send chan<- int32, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1070,7 +1301,14 @@ func ConnectInt32(ctx context.Context, recv <-chan int32, send chan<- int32, onE
 func CaseRecvInt64(ctx context.Context, ch <-chan int64, f func(v int64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1102,7 +1340,14 @@ func CaseRecvInt64(ctx context.Context, ch <-chan int64, f func(v int64, ok bool
 func CaseSendInt64(ctx context.Context, ch chan<- int64, v int64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1128,7 +1373,14 @@ func CaseSendInt64(ctx context.Context, ch chan<- int64, v int64, onEvent func(s
 func ConnectInt64(ctx context.Context, recv <-chan int64, send chan<- int64, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1166,7 +1418,14 @@ func ConnectInt64(ctx context.Context, recv <-chan int64, send chan<- int64, onE
 func CaseRecvInt8(ctx context.Context, ch <-chan int8, f func(v int8, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1198,7 +1457,14 @@ func CaseRecvInt8(ctx context.Context, ch <-chan int8, f func(v int8, ok bool) c
 func CaseSendInt8(ctx context.Context, ch chan<- int8, v int8, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1224,7 +1490,14 @@ func CaseSendInt8(ctx context.Context, ch chan<- int8, v int8, onEvent func(sent
 func ConnectInt8(ctx context.Context, recv <-chan int8, send chan<- int8, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1262,7 +1535,14 @@ func ConnectInt8(ctx context.Context, recv <-chan int8, send chan<- int8, onEven
 func CaseRecvRune(ctx context.Context, ch <-chan rune, f func(v rune, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1294,7 +1574,14 @@ func CaseRecvRune(ctx context.Context, ch <-chan rune, f func(v rune, ok bool) c
 func CaseSendRune(ctx context.Context, ch chan<- rune, v rune, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1320,7 +1607,14 @@ func CaseSendRune(ctx context.Context, ch chan<- rune, v rune, onEvent func(sent
 func ConnectRune(ctx context.Context, recv <-chan rune, send chan<- rune, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1358,7 +1652,14 @@ func ConnectRune(ctx context.Context, recv <-chan rune, send chan<- rune, onEven
 func CaseRecvString(ctx context.Context, ch <-chan string, f func(v string, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1390,7 +1691,14 @@ func CaseRecvString(ctx context.Context, ch <-chan string, f func(v string, ok b
 func CaseSendString(ctx context.Context, ch chan<- string, v string, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1416,7 +1724,14 @@ func CaseSendString(ctx context.Context, ch chan<- string, v string, onEvent fun
 func ConnectString(ctx context.Context, recv <-chan string, send chan<- string, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1454,7 +1769,14 @@ func ConnectString(ctx context.Context, recv <-chan string, send chan<- string, 
 func CaseRecvUint(ctx context.Context, ch <-chan uint, f func(v uint, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1486,7 +1808,14 @@ func CaseRecvUint(ctx context.Context, ch <-chan uint, f func(v uint, ok bool) c
 func CaseSendUint(ctx context.Context, ch chan<- uint, v uint, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1512,7 +1841,14 @@ func CaseSendUint(ctx context.Context, ch chan<- uint, v uint, onEvent func(sent
 func ConnectUint(ctx context.Context, recv <-chan uint, send chan<- uint, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1550,7 +1886,14 @@ func ConnectUint(ctx context.Context, recv <-chan uint, send chan<- uint, onEven
 func CaseRecvUint16(ctx context.Context, ch <-chan uint16, f func(v uint16, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1582,7 +1925,14 @@ func CaseRecvUint16(ctx context.Context, ch <-chan uint16, f func(v uint16, ok b
 func CaseSendUint16(ctx context.Context, ch chan<- uint16, v uint16, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1608,7 +1958,14 @@ func CaseSendUint16(ctx context.Context, ch chan<- uint16, v uint16, onEvent fun
 func ConnectUint16(ctx context.Context, recv <-chan uint16, send chan<- uint16, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1646,7 +2003,14 @@ func ConnectUint16(ctx context.Context, recv <-chan uint16, send chan<- uint16, 
 func CaseRecvUint32(ctx context.Context, ch <-chan uint32, f func(v uint32, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1678,7 +2042,14 @@ func CaseRecvUint32(ctx context.Context, ch <-chan uint32, f func(v uint32, ok b
 func CaseSendUint32(ctx context.Context, ch chan<- uint32, v uint32, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1704,7 +2075,14 @@ func CaseSendUint32(ctx context.Context, ch chan<- uint32, v uint32, onEvent fun
 func ConnectUint32(ctx context.Context, recv <-chan uint32, send chan<- uint32, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1742,7 +2120,14 @@ func ConnectUint32(ctx context.Context, recv <-chan uint32, send chan<- uint32, 
 func CaseRecvUint64(ctx context.Context, ch <-chan uint64, f func(v uint64, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1774,7 +2159,14 @@ func CaseRecvUint64(ctx context.Context, ch <-chan uint64, f func(v uint64, ok b
 func CaseSendUint64(ctx context.Context, ch chan<- uint64, v uint64, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1800,7 +2192,14 @@ func CaseSendUint64(ctx context.Context, ch chan<- uint64, v uint64, onEvent fun
 func ConnectUint64(ctx context.Context, recv <-chan uint64, send chan<- uint64, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1838,7 +2237,14 @@ func ConnectUint64(ctx context.Context, recv <-chan uint64, send chan<- uint64, 
 func CaseRecvUint8(ctx context.Context, ch <-chan uint8, f func(v uint8, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1870,7 +2276,14 @@ func CaseRecvUint8(ctx context.Context, ch <-chan uint8, f func(v uint8, ok bool
 func CaseSendUint8(ctx context.Context, ch chan<- uint8, v uint8, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1896,7 +2309,14 @@ func CaseSendUint8(ctx context.Context, ch chan<- uint8, v uint8, onEvent func(s
 func ConnectUint8(ctx context.Context, recv <-chan uint8, send chan<- uint8, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1934,7 +2354,14 @@ func ConnectUint8(ctx context.Context, recv <-chan uint8, send chan<- uint8, onE
 func CaseRecvUintptr(ctx context.Context, ch <-chan uintptr, f func(v uintptr, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1966,7 +2393,14 @@ func CaseRecvUintptr(ctx context.Context, ch <-chan uintptr, f func(v uintptr, o
 func CaseSendUintptr(ctx context.Context, ch chan<- uintptr, v uintptr, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -1992,7 +2426,14 @@ func CaseSendUintptr(ctx context.Context, ch chan<- uintptr, v uintptr, onEvent 
 func ConnectUintptr(ctx context.Context, recv <-chan uintptr, send chan<- uintptr, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2030,7 +2471,14 @@ func ConnectUintptr(ctx context.Context, recv <-chan uintptr, send chan<- uintpt
 func CaseRecvInterface(ctx context.Context, ch <-chan interface{}, f func(v interface{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2062,7 +2510,14 @@ func CaseRecvInterface(ctx context.Context, ch <-chan interface{}, f func(v inte
 func CaseSendInterface(ctx context.Context, ch chan<- interface{}, v interface{}, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2088,7 +2543,14 @@ func CaseSendInterface(ctx context.Context, ch chan<- interface{}, v interface{}
 func ConnectInterface(ctx context.Context, recv <-chan interface{}, send chan<- interface{}, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2126,7 +2588,14 @@ func ConnectInterface(ctx context.Context, recv <-chan interface{}, send chan<- 
 func CaseRecvStruct(ctx context.Context, ch <-chan struct{}, f func(v struct{}, ok bool) core.CaseControl, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2158,7 +2627,14 @@ func CaseRecvStruct(ctx context.Context, ch <-chan struct{}, f func(v struct{}, 
 func CaseSendStruct(ctx context.Context, ch chan<- struct{}, v struct{}, onEvent func(sent core.CaseResult), elseCh <-chan struct{}) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
@@ -2184,7 +2660,14 @@ func CaseSendStruct(ctx context.Context, ch chan<- struct{}, v struct{}, onEvent
 func ConnectStruct(ctx context.Context, recv <-chan struct{}, send chan<- struct{}, onEvent func(core.CaseResult)) {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
-	cnt.Add(1)
+	ok := cnt.AddOrNot(1)
+	if !ok {
+		if onEvent != nil {
+			onEvent(core.CASE_CANCEL)
+		}
+		return
+	}
+
 	go func() {
 		defer cnt.Done()
 
