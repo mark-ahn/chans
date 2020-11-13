@@ -159,6 +159,7 @@ func (__ *_Prefix_SomeBroadCaster) ServeThread(ctx context.Context, tctx syncs.T
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
