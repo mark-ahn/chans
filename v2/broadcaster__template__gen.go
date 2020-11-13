@@ -163,6 +163,7 @@ func (__ *OfBytesBroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -325,6 +326,7 @@ func (__ *OfBoolBroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -487,6 +489,7 @@ func (__ *OfByteBroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -649,6 +652,7 @@ func (__ *OfComplex128BroadCaster) ServeThread(ctx context.Context, tctx syncs.T
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -811,6 +815,7 @@ func (__ *OfComplex64BroadCaster) ServeThread(ctx context.Context, tctx syncs.Th
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -973,6 +978,7 @@ func (__ *OfErrorBroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1135,6 +1141,7 @@ func (__ *OfFloat32BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thre
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1297,6 +1304,7 @@ func (__ *OfFloat64BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thre
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1459,6 +1467,7 @@ func (__ *OfIntBroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadCo
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1621,6 +1630,7 @@ func (__ *OfInt16BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1783,6 +1793,7 @@ func (__ *OfInt32BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -1945,6 +1956,7 @@ func (__ *OfInt64BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2107,6 +2119,7 @@ func (__ *OfInt8BroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2269,6 +2282,7 @@ func (__ *OfRuneBroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2431,6 +2445,7 @@ func (__ *OfStringBroadCaster) ServeThread(ctx context.Context, tctx syncs.Threa
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2593,6 +2608,7 @@ func (__ *OfUintBroadCaster) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2755,6 +2771,7 @@ func (__ *OfUint16BroadCaster) ServeThread(ctx context.Context, tctx syncs.Threa
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -2917,6 +2934,7 @@ func (__ *OfUint32BroadCaster) ServeThread(ctx context.Context, tctx syncs.Threa
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -3079,6 +3097,7 @@ func (__ *OfUint64BroadCaster) ServeThread(ctx context.Context, tctx syncs.Threa
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -3241,6 +3260,7 @@ func (__ *OfUint8BroadCaster) ServeThread(ctx context.Context, tctx syncs.Thread
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -3403,6 +3423,7 @@ func (__ *OfUintptrBroadCaster) ServeThread(ctx context.Context, tctx syncs.Thre
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -3565,6 +3586,7 @@ func (__ *OfInterfaceBroadCaster) ServeThread(ctx context.Context, tctx syncs.Th
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
@@ -3727,6 +3749,7 @@ func (__ *OfStructBroadCaster) ServeThread(ctx context.Context, tctx syncs.Threa
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
 					delete(__.recvs, d)
+					close(d)
 				}
 			default:
 				fmt.Println("terminate")
