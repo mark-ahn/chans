@@ -158,8 +158,11 @@ func (__ *_Prefix_SomeBroadCaster) ServeThread(ctx context.Context, tctx syncs.T
 				case __.add_recv:
 					__.recvs[d] = struct{}{}
 				case __.delete_recv:
-					delete(__.recvs, d)
-					close(d)
+					_, ok := __.recvs[d]
+					if ok {
+						delete(__.recvs, d)
+						close(d)
+					}
 				}
 			default:
 				fmt.Println("terminate")
