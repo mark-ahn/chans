@@ -4,20 +4,21 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mark-ahn/chans/v1/core"
+	"github.com/mark-ahn/chans/v3/core"
 	"github.com/mark-ahn/syncs"
 )
 
-func _Prefix_FuncSome(ctx context.Context, f func() (Some, error), n int) (<-chan Some, error) {
+func MakePushWith[T any](ctx context.Context, f func() (T, error), n int) (<-chan T, error) {
 
-	ch := make(chan Some, n)
-	err := _Prefix_FuncSomeWith(ctx, f, ch, func() {
+	ch := make(chan T, n)
+	err := Push(ctx, ch, f, func() {
 		close(ch)
 	})
 	return ch, err
 }
 
-func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) error {
+// push every value returned from f to channel
+func Push[T any](ctx context.Context, ch chan<- T, f func() (T, error), release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ok := cnt.AddOrNot(1)
@@ -25,7 +26,7 @@ func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<-
 		if release != nil {
 			release()
 		}
-		return fmt.Errorf("cannot start thread with context which has done")
+		return fmt.Errorf("cannot start thread cause context done")
 	}
 
 	go func() {
@@ -58,16 +59,15 @@ func _Prefix_FuncSomeWith(ctx context.Context, f func() (Some, error), ch chan<-
 	return nil
 }
 
-func _Prefix_FuncSomeSingleShot(ctx context.Context, f func() (Some, error), n int) (<-chan Some, error) {
-
-	ch := make(chan Some, n)
-	err := _Prefix_FuncSomeWithSingleShot(ctx, f, ch, func() {
+func MakePushSingleShotWith[T any](ctx context.Context, f func() (T, error), n int) (<-chan T, error) {
+	ch := make(chan T, n)
+	err := PushSingleShot(ctx, f, ch, func() {
 		close(ch)
 	})
 	return ch, err
 }
 
-func _Prefix_FuncSomeWithSingleShot(ctx context.Context, f func() (Some, error), ch chan<- Some, release func()) error {
+func PushSingleShot[T any](ctx context.Context, f func() (T, error), ch chan<- T, release func()) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ok := cnt.AddOrNot(1)

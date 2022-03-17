@@ -12,7 +12,7 @@ type DoneNotifier interface {
 	Done() <-chan struct{}
 }
 
-func Clear[Some any](ch <-chan Some) int {
+func Clear[T any](ch <-chan T) int {
 	n := len(ch)
 	for i := 0; i < n; i += 1 {
 		<-ch
@@ -20,64 +20,64 @@ func Clear[Some any](ch <-chan Some) int {
 	return n
 }
 
-type BroadCaster[Some any] struct {
-	srcs        map[<-chan Some]struct{}
-	recvs       map[chan<- Some]struct{}
-	add_src     chan (<-chan Some)
-	delete_src  chan (<-chan Some)
-	add_recv    chan (chan<- Some)
-	delete_recv chan (chan<- Some)
+type BroadCaster[T any] struct {
+	srcs        map[<-chan T]struct{}
+	recvs       map[chan<- T]struct{}
+	add_src     chan (<-chan T)
+	delete_src  chan (<-chan T)
+	add_recv    chan (chan<- T)
+	delete_recv chan (chan<- T)
 }
 
-func NewBroadCaster[Some any](initSrcs []<-chan Some, initRecvs []chan<- Some) *BroadCaster[Some] {
-	srcs := make(map[<-chan Some]struct{})
+func NewBroadCaster[T any](initSrcs []<-chan T, initRecvs []chan<- T) *BroadCaster[T] {
+	srcs := make(map[<-chan T]struct{})
 	for _, src := range initSrcs {
 		srcs[src] = struct{}{}
 	}
-	recvs := make(map[chan<- Some]struct{})
+	recvs := make(map[chan<- T]struct{})
 	for _, recv := range initRecvs {
 		recvs[recv] = struct{}{}
 	}
 
-	return &BroadCaster[Some]{
+	return &BroadCaster[T]{
 		srcs:        srcs,
 		recvs:       recvs,
-		add_src:     make(chan (<-chan Some)),
-		delete_src:  make(chan (<-chan Some)),
-		add_recv:    make(chan (chan<- Some)),
-		delete_recv: make(chan (chan<- Some)),
+		add_src:     make(chan (<-chan T)),
+		delete_src:  make(chan (<-chan T)),
+		add_recv:    make(chan (chan<- T)),
+		delete_recv: make(chan (chan<- T)),
 	}
 }
 
-func (__ *BroadCaster[Some]) AddSources(srcs ...<-chan Some) {
+func (__ *BroadCaster[T]) AddSources(srcs ...<-chan T) {
 	for _, src := range srcs {
 		__.add_src <- src
 	}
 }
-func (__ *BroadCaster[Some]) DeleteSources(srcs ...<-chan Some) {
+func (__ *BroadCaster[T]) DeleteSources(srcs ...<-chan T) {
 	for _, src := range srcs {
 		__.delete_src <- src
 	}
 }
 
-func (__ *BroadCaster[Some]) AddReceivers(recvs ...chan<- Some) *BroadCaster[Some] {
+func (__ *BroadCaster[T]) AddReceivers(recvs ...chan<- T) *BroadCaster[T] {
 	for _, recv := range recvs {
 		__.add_recv <- recv
 	}
 	return __
 }
-func (__ *BroadCaster[Some]) DeleteReceivers(recvs ...chan<- Some) *BroadCaster[Some] {
+func (__ *BroadCaster[T]) DeleteReceivers(recvs ...chan<- T) *BroadCaster[T] {
 	for _, recv := range recvs {
 		__.delete_recv <- recv
 	}
 	return __
 }
 
-func (__ *BroadCaster[Some]) len_read_ch() int {
+func (__ *BroadCaster[T]) len_read_ch() int {
 	return len(__.srcs) + 4
 }
 
-func (__ *BroadCaster[Some]) collect_chans(done DoneNotifier) []reflect.SelectCase {
+func (__ *BroadCaster[T]) collect_chans(done DoneNotifier) []reflect.SelectCase {
 	read_cases := make([]reflect.SelectCase, 0, __.len_read_ch()+1)
 	for ch := range __.srcs {
 		read_cases = append(read_cases, reflect.SelectCase{
@@ -85,13 +85,13 @@ func (__ *BroadCaster[Some]) collect_chans(done DoneNotifier) []reflect.SelectCa
 			Dir:  reflect.SelectRecv,
 		})
 	}
-	for _, ch := range []chan (<-chan Some){__.add_src, __.delete_src} {
+	for _, ch := range []chan (<-chan T){__.add_src, __.delete_src} {
 		read_cases = append(read_cases, reflect.SelectCase{
 			Chan: reflect.ValueOf(ch),
 			Dir:  reflect.SelectRecv,
 		})
 	}
-	for _, ch := range []chan (chan<- Some){__.add_recv, __.delete_recv} {
+	for _, ch := range []chan (chan<- T){__.add_recv, __.delete_recv} {
 		read_cases = append(read_cases, reflect.SelectCase{
 			Chan: reflect.ValueOf(ch),
 			Dir:  reflect.SelectRecv,
@@ -106,7 +106,7 @@ func (__ *BroadCaster[Some]) collect_chans(done DoneNotifier) []reflect.SelectCa
 	return read_cases
 }
 
-func (__ *BroadCaster[Some]) ServeThread(ctx context.Context, tctx syncs.ThreadContext) error {
+func (__ *BroadCaster[T]) ServeThread(ctx context.Context, tctx syncs.ThreadContext) error {
 	// fmt.Println("ServeThread")
 	th_cnt := syncs.ThreadCounterFrom(ctx)
 	ok := th_cnt.AddOrNot(1)
@@ -134,8 +134,8 @@ func (__ *BroadCaster[Some]) ServeThread(ctx context.Context, tctx syncs.ThreadC
 			// fmt.Println(chosen, recv, recv_ok)
 			switch ch := cases[chosen].Chan.Interface().(type) {
 			// srcs
-			case <-chan Some:
-				d := recv.Interface().(Some)
+			case <-chan T:
+				d := recv.Interface().(T)
 				for recv := range __.recvs {
 					select {
 					case recv <- d:
@@ -143,8 +143,8 @@ func (__ *BroadCaster[Some]) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					}
 				}
 			// add/delete src
-			case chan (<-chan Some):
-				d := recv.Interface().(<-chan Some)
+			case chan (<-chan T):
+				d := recv.Interface().(<-chan T)
 				switch ch {
 				case __.add_src:
 					__.srcs[d] = struct{}{}
@@ -152,8 +152,8 @@ func (__ *BroadCaster[Some]) ServeThread(ctx context.Context, tctx syncs.ThreadC
 					delete(__.srcs, d)
 				}
 			// add/delete recv
-			case chan (chan<- Some):
-				d := recv.Interface().(chan<- Some)
+			case chan (chan<- T):
+				d := recv.Interface().(chan<- T)
 				switch ch {
 				case __.add_recv:
 					__.recvs[d] = struct{}{}
