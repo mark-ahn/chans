@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mark-ahn/chans/v3/core"
 	"github.com/mark-ahn/syncs"
 )
 
@@ -44,16 +43,16 @@ import (
 // 	return nil
 // }
 
-func Connect[T any](ctx context.Context, recv <-chan T, send chan<- T, onEvent func(core.CaseResult)) error {
+func Connect[T any](ctx context.Context, recv <-chan T, send chan<- T, onEvent func(CaseResult)) error {
 	return ConnectFunc(ctx, recv, send, func(t T, b bool) (T, error) { return t, nil }, onEvent)
 }
-func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U, mapF func(T, bool) (U, error), onEvent func(core.CaseResult)) error {
+func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U, mapF func(T, bool) (U, error), onEvent func(CaseResult)) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
 
 	ok := cnt.AddOrNot(1)
 	if !ok {
 		if onEvent != nil {
-			onEvent(core.CASE_CANCEL)
+			onEvent(CASE_CANCEL)
 		}
 		return fmt.Errorf("cannot start thread cause context done")
 	}
@@ -72,7 +71,7 @@ func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U
 			case d, ok := <-recv_ch:
 				to_send, err = mapF(d, ok)
 				switch err {
-				case core.ErrSkipMap:
+				case ErrSkipMap:
 					continue
 				case nil:
 					recv_ch = nil
@@ -81,9 +80,9 @@ func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U
 					if onEvent != nil {
 						switch ok {
 						case false:
-							onEvent(core.CASE_CLOSED)
+							onEvent(CASE_CLOSED)
 						default:
-							onEvent(core.CASE_STOP)
+							onEvent(CASE_STOP)
 						}
 					}
 					break loop
@@ -95,7 +94,7 @@ func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U
 
 			case <-ctx.Done():
 				if onEvent != nil {
-					onEvent(core.CASE_CANCEL)
+					onEvent(CASE_CANCEL)
 				}
 				break loop
 			}

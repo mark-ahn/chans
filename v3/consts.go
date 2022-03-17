@@ -1,4 +1,4 @@
-package core
+package chans
 
 import (
 	"fmt"

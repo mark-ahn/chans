@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mark-ahn/chans/v3/core"
 	"github.com/mark-ahn/syncs"
 )
 
@@ -41,7 +40,7 @@ func Push[T any](ctx context.Context, ch chan<- T, f func() (T, error), release 
 		for {
 			t, err := f()
 			switch err {
-			case core.ErrStopIter:
+			case ErrStopIter:
 				break loop
 			case nil:
 			default:
