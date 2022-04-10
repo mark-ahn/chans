@@ -43,8 +43,14 @@ import (
 // 	return nil
 // }
 
+func bypass[T any](t T, b bool) (T, error) {
+	if !b {
+		return t, ErrStopIter
+	}
+	return t, nil
+}
 func Connect[T any](ctx context.Context, recv <-chan T, send chan<- T, onEvent func(CaseResult)) error {
-	return ConnectFunc(ctx, recv, send, func(t T, b bool) (T, error) { return t, nil }, onEvent)
+	return ConnectFunc(ctx, recv, send, bypass[T], onEvent)
 }
 func ConnectFunc[T any, U any](ctx context.Context, recv <-chan T, send chan<- U, mapF func(T, bool) (U, error), onEvent func(CaseResult)) error {
 	cnt := syncs.ThreadCounterFrom(ctx)
