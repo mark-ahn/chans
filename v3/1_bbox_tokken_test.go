@@ -22,4 +22,8 @@ func Test_Tokken(t *testing.T) {
 	fmt.Println("drop", len(tokken))
 	chans.PutFull(tokken, func(index int) struct{} { return struct{}{} })
 	fmt.Println("put", len(tokken))
+	chans.ConsumeAll(tokken, func(index int, value struct{}) error {
+		fmt.Println(index)
+		return nil
+	})
 }

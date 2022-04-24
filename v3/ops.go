@@ -11,6 +11,23 @@ func Drop[T any](ch <-chan T, l int) int {
 	return l
 }
 
+func ConsumeAll[T any](ch <-chan T, f func(index int, value T) error) (int, error) {
+	l := len(ch)
+	return Consume(ch, f, l)
+}
+
+func Consume[T any](ch <-chan T, f func(index int, value T) error, l int) (int, error) {
+	var i = 0
+	var err error
+	for ; i < l; i += 1 {
+		err = f(i, <-ch)
+		if err != nil {
+			return i, err
+		}
+	}
+	return i, nil
+}
+
 func PutFull[T any](ch chan<- T, f func(index int) T) int {
 	l := cap(ch) - len(ch)
 	return Put(ch, f, l)
