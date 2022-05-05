@@ -7,11 +7,22 @@ import (
 	"github.com/mark-ahn/syncs"
 )
 
+// deprecated
 func MakePushWith[T any](ctx context.Context, f func() (T, error), n int) (<-chan T, error) {
-
 	ch := make(chan T, n)
 	err := Push(ctx, ch, f, func() {
 		close(ch)
+	})
+	return ch, err
+}
+
+func MakePush[T any](ctx context.Context, n int, f func() (T, error), release func()) (<-chan T, error) {
+	ch := make(chan T, n)
+	err := Push(ctx, ch, f, func() {
+		close(ch)
+		if release != nil {
+			release()
+		}
 	})
 	return ch, err
 }
@@ -58,10 +69,22 @@ func Push[T any](ctx context.Context, ch chan<- T, f func() (T, error), release 
 	return nil
 }
 
+//deprecated
 func MakePushSingleShotWith[T any](ctx context.Context, f func() (T, error), n int) (<-chan T, error) {
 	ch := make(chan T, n)
 	err := PushSingleShot(ctx, f, ch, func() {
 		close(ch)
+	})
+	return ch, err
+}
+
+func MakePushSingleShot[T any](ctx context.Context, n int, f func() (T, error), release func()) (<-chan T, error) {
+	ch := make(chan T, n)
+	err := PushSingleShot(ctx, f, ch, func() {
+		close(ch)
+		if release != nil {
+			release()
+		}
 	})
 	return ch, err
 }
