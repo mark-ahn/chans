@@ -2,8 +2,8 @@ github.com/cheekybits/genny v1.0.0 h1:uGGa4nei+j20rOSeDeP5Of12XVm7TGUd4dJA9RDitf
 github.com/cheekybits/genny v1.0.0/go.mod h1:+tQajlRqAUrPI7DOSpB0XAqZYtQakVtB7wXkRAgjxjQ=
 github.com/coreos/go-systemd/v22 v22.3.2/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
-github.com/mark-ahn/syncs v0.1.4-0.20201113070211-97742e9d2701 h1:5Z6HmNuSLtSNKS4hDBaxmveY/Bg8tOcKBX2x0JqMFBg=
-github.com/mark-ahn/syncs v0.1.4-0.20201113070211-97742e9d2701/go.mod h1:rY4QWbGbyldo7+hyhEL/dq+VWzbodnCMlrq4YnBFzKI=
+github.com/mark-ahn/syncs v0.2.1-0.20220424080545-1905a6513b52 h1:mg2oXNBdhgxZid0EauL4G82uqQY030IxBw1mFgnRP9o=
+github.com/mark-ahn/syncs v0.2.1-0.20220424080545-1905a6513b52/go.mod h1:csyGiuKKSiwxbUn3Hr4ej8q/v53Ap9bHzqajqKXHZrs=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/rs/xid v1.3.0/go.mod h1:trrq9SKmegXys3aeAKXMUTdJsYXVwGY3RLcfgqegfbg=
 github.com/rs/zerolog v1.26.1 h1:/ihwxqH+4z8UxyI70wM1z9yCvkWcfz/a3mj48k/Zngc=
